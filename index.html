@@ -126,50 +126,53 @@ h1,h2,h3{ letter-spacing:-.03em; font-weight:650; line-height:1.05; }
 .board-vid{ position:absolute; inset:70px 24px 24px; width:calc(100% - 48px); height:calc(100% - 94px);
   object-fit:contain; mix-blend-mode:multiply; pointer-events:none; }
 
-/* live scene: a cursor drags out Idea → Build → Ship, 10s loop */
+/* live scene: a cursor drags out Idea → Build → Ship, 10.5s loop
+   (with a beat of linger after the first box lands) */
 .hand-svg{ font-family:var(--hand); }
-.h-scene{ animation:hFade 10s infinite; }
+.h-scene{ animation:hFade 10.5s infinite; }
 @keyframes hFade{ 0%,94%{opacity:1} 97%,99.8%{opacity:0} 100%{opacity:1} }
-.h-cur{ animation:hCur 10s infinite; }
+.h-cur{ animation:hCur 10.5s infinite; }
 @keyframes hCur{
   0%{transform:translate(80px,110px); opacity:0}
   2%{transform:translate(100px,150px); opacity:1}
-  12%{transform:translate(330px,270px)}
-  16%{transform:translate(344px,210px)}
-  23%{transform:translate(436px,210px)}
-  26%{transform:translate(452px,118px)}
-  36%{transform:translate(668px,302px)}
-  39%{transform:translate(684px,210px)}
-  45%{transform:translate(776px,210px)}
-  48%{transform:translate(790px,150px)}
-  58%{transform:translate(1020px,270px)}
-  62%{transform:translate(1064px,330px); opacity:1}
-  66%,100%{transform:translate(1064px,330px); opacity:0}
+  11%{transform:translate(330px,270px)}
+  13%{transform:translate(354px,252px)}
+  20%{transform:translate(354px,252px)}
+  22%{transform:translate(344px,210px)}
+  28%{transform:translate(436px,210px)}
+  31%{transform:translate(452px,118px)}
+  40%{transform:translate(668px,302px)}
+  43%{transform:translate(684px,210px)}
+  48%{transform:translate(776px,210px)}
+  51%{transform:translate(790px,150px)}
+  60%{transform:translate(1020px,270px)}
+  64%{transform:translate(1064px,330px); opacity:1}
+  68%,100%{transform:translate(1064px,330px); opacity:0}
 }
-.h-r1{ animation:hR1 10s infinite; } .h-d{ animation:hD 10s infinite; } .h-r2{ animation:hR2 10s infinite; }
-@keyframes hR1{ 0%,2%{transform:scale(0,0)} 12%,100%{transform:scale(1,1)} }
-@keyframes hD{ 0%,26%{transform:scale(0,0)} 36%,100%{transform:scale(1,1)} }
-@keyframes hR2{ 0%,48%{transform:scale(0,0)} 58%,100%{transform:scale(1,1)} }
+.h-r1{ animation:hR1 10.5s infinite; } .h-d{ animation:hD 10.5s infinite; } .h-r2{ animation:hR2 10.5s infinite; }
+@keyframes hR1{ 0%,2%{transform:scale(0,0)} 11%,100%{transform:scale(1,1)} }
+@keyframes hD{ 0%,31%{transform:scale(0,0)} 40%,100%{transform:scale(1,1)} }
+@keyframes hR2{ 0%,51%{transform:scale(0,0)} 60%,100%{transform:scale(1,1)} }
 .h-a1,.h-a2{ stroke-dasharray:1; }
-.h-a1{ animation:hA1 10s infinite; } .h-a2{ animation:hA2 10s infinite; }
-@keyframes hA1{ 0%,16%{stroke-dashoffset:1} 23%,100%{stroke-dashoffset:0} }
-@keyframes hA2{ 0%,39%{stroke-dashoffset:1} 45%,100%{stroke-dashoffset:0} }
-.h-ah1{ animation:hAh1 10s infinite; } .h-ah2{ animation:hAh2 10s infinite; }
-@keyframes hAh1{ 0%,22%{opacity:0} 24%,100%{opacity:1} }
-@keyframes hAh2{ 0%,44%{opacity:0} 46%,100%{opacity:1} }
-.h-l1{ animation:hL1 10s infinite; } .h-l2{ animation:hL2 10s infinite; } .h-l3{ animation:hL3 10s infinite; }
-@keyframes hL1{ 0%,12.5%{opacity:0} 14.5%,100%{opacity:1} }
-@keyframes hL2{ 0%,36.5%{opacity:0} 38.5%,100%{opacity:1} }
-@keyframes hL3{ 0%,58.5%{opacity:0} 60.5%,100%{opacity:1} }
+.h-a1{ animation:hA1 10.5s infinite; } .h-a2{ animation:hA2 10.5s infinite; }
+@keyframes hA1{ 0%,22%{stroke-dashoffset:1} 28%,100%{stroke-dashoffset:0} }
+@keyframes hA2{ 0%,43%{stroke-dashoffset:1} 48%,100%{stroke-dashoffset:0} }
+.h-ah1{ animation:hAh1 10.5s infinite; } .h-ah2{ animation:hAh2 10.5s infinite; }
+@keyframes hAh1{ 0%,27%{opacity:0} 29%,100%{opacity:1} }
+@keyframes hAh2{ 0%,47%{opacity:0} 49%,100%{opacity:1} }
+.h-l1{ animation:hL1 10.5s infinite; } .h-l2{ animation:hL2 10.5s infinite; } .h-l3{ animation:hL3 10.5s infinite; }
+@keyframes hL1{ 0%,11.5%{opacity:0} 13.5%,100%{opacity:1} }
+@keyframes hL2{ 0%,41%{opacity:0} 43%,100%{opacity:1} }
+@keyframes hL3{ 0%,60.5%{opacity:0} 62.5%,100%{opacity:1} }
 /* toolbar plays along: the in-use tool lights up */
-.board .ws-toolbar .tb:nth-child(2){ animation:tbSel 10s infinite; }
-.board .ws-toolbar .tb:nth-child(3){ animation:tbRect 10s infinite; }
-.board .ws-toolbar .tb:nth-child(5){ animation:tbDia 10s infinite; }
-.board .ws-toolbar .tb:nth-child(6){ animation:tbArw 10s infinite; }
-@keyframes tbSel{ 0%,1%{background:#6965db;color:#fff} 2%,61%{background:transparent;color:#26242e} 63%,100%{background:#6965db;color:#fff} }
-@keyframes tbRect{ 0%,1%{background:transparent;color:#26242e} 2%,12%{background:#6965db;color:#fff} 14%,46%{background:transparent;color:#26242e} 48%,58%{background:#6965db;color:#fff} 60%,100%{background:transparent;color:#26242e} }
-@keyframes tbDia{ 0%,25%{background:transparent;color:#26242e} 26%,36%{background:#6965db;color:#fff} 38%,100%{background:transparent;color:#26242e} }
-@keyframes tbArw{ 0%,15%{background:transparent;color:#26242e} 16%,23%{background:#6965db;color:#fff} 25%,38%{background:transparent;color:#26242e} 39%,45%{background:#6965db;color:#fff} 47%,100%{background:transparent;color:#26242e} }
+.board .ws-toolbar .tb:nth-child(2){ animation:tbSel 10.5s infinite; }
+.board .ws-toolbar .tb:nth-child(3){ animation:tbRect 10.5s infinite; }
+.board .ws-toolbar .tb:nth-child(5){ animation:tbDia 10.5s infinite; }
+.board .ws-toolbar .tb:nth-child(6){ animation:tbArw 10.5s infinite; }
+@keyframes tbSel{ 0%,1%{background:#6965db;color:#fff} 2%,63%{background:transparent;color:#26242e} 65%,100%{background:#6965db;color:#fff} }
+@keyframes tbRect{ 0%,1%{background:transparent;color:#26242e} 2%,11%{background:#6965db;color:#fff} 13%,49%{background:transparent;color:#26242e} 51%,60%{background:#6965db;color:#fff} 62%,100%{background:transparent;color:#26242e} }
+@keyframes tbDia{ 0%,30%{background:transparent;color:#26242e} 31%,40%{background:#6965db;color:#fff} 42%,100%{background:transparent;color:#26242e} }
+@keyframes tbArw{ 0%,21%{background:transparent;color:#26242e} 22%,28%{background:#6965db;color:#fff} 30%,42%{background:transparent;color:#26242e} 43%,48%{background:#6965db;color:#fff} 50%,100%{background:transparent;color:#26242e} }
 @media(prefers-reduced-motion:reduce){
   .h-scene,.h-cur,.h-r1,.h-d,.h-r2,.h-a1,.h-a2,.h-ah1,.h-ah2,.h-l1,.h-l2,.h-l3,
   .board .ws-toolbar .tb{ animation:none !important; }
