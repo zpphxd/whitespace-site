@@ -141,7 +141,7 @@ h1,h2,h3{ letter-spacing:-.03em; font-weight:650; line-height:1.05; }
 /* ============================================================
    JOURNEY — the whole site after the hero is one whiteboard
    ============================================================ */
-.j-track{ position:relative; height:960vh; }
+.j-track{ position:relative; height:1080vh; }
 .j-viewport{ position:sticky; top:0; height:100vh; height:100svh; overflow:hidden;
   background:
     radial-gradient(rgba(29,29,31,.14) 1.1px, transparent 1.4px) 0 0/26px 26px,
@@ -678,10 +678,11 @@ if(stage) new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting) 
     {x: 520,  y: 1650, z: 1.02},
     {x: 1750, y: 1080, z: 1.01},
     {x: 1760, y: 1300, z: null},
-    {x: 1760, y: 1300, z: null},   // camera holds while the eraser wipes the board
+    {x: 1760, y: 1300, z: null},   // camera holds while the eraser wipes the board…
+    {x: 1760, y: 1300, z: null},   // …across TWO segments, so the wipe takes its time
   ];
   const K = KF.length;
-  const ERASE = K - 2;             // erase phase runs over segment [ERASE, ERASE+1]
+  const ERASE = K - 3;             // erase phase spans the final two held segments
 
   const flatMq = matchMedia('(max-width:560px)');   // only phones get the static stack
   const rmMq = matchMedia('(prefers-reduced-motion: reduce)');
@@ -766,7 +767,7 @@ if(stage) new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting) 
     });
 
     // erase phase: e goes 0→1 across the final held segment
-    const e = Math.min(1, Math.max(0, t.i - ERASE));
+    const e = Math.min(1, Math.max(0, (t.i - ERASE) / 2));
 
     // nodes pop in as the arrow arrives; the eraser takes them back out
     nodes.forEach((n,j)=>{
