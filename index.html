@@ -1019,7 +1019,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     const r = track.getBoundingClientRect();
     let p = Math.min(1, Math.max(0, -r.top / total));
     if(typeof window.__jpin === 'number') p = window.__jpin;   // test/deep-link pin
-    const i = p * (K - 1);
+    // linger on stop 1: the first slice of scroll holds the camera on the
+    // desktop-layer node before the journey starts moving
+    const DWELL = 0.06;
+    const pw = Math.max(0, (p - DWELL) / (1 - DWELL));
+    const i = pw * (K - 1);
     const a = Math.min(K - 2, Math.floor(i));
     const t = smooth(Math.min(1, i - a));
     const A = KF[a], B = KF[a+1];
