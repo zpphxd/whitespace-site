@@ -20,16 +20,15 @@
 <style>
 /* ============================================================
    Whitespace — features page
-   One STATIC board: every feature pinned up as a hand-drawn
-   card, grouped inside labeled frames (the app's own concept).
-   Same visual system as the landing page.
+   One STATIC board of hand-drawn cards in labeled frames.
+   Cards that can demo themselves FLIP on hover to a looping
+   animation of the feature. Animations run only while hovered.
    ============================================================ */
 :root{
   --ink:#1d1d1f; --ink-soft:#6e6e73; --ink-faint:#a1a1a6; --line:#d2d2d7;
   --paper:#fff; --paper-2:#fbfbfd; --paper-3:#f5f5f7;
   --accent:#6965db; --accent-2:#a78bfa; --accent-ink:#524dc7;
   --sketch:#2b2b30;
-  --shadow-md:0 20px 44px -22px rgba(20,18,40,.24);
   --ease:cubic-bezier(.22,.61,.36,1);
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
   --hand:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;
@@ -65,8 +64,8 @@ img,svg{ display:block; max-width:100%; }
 /* HEAD */
 .head{ padding:130px 0 26px; text-align:center; }
 .head h1{ font-size:clamp(36px,5.6vw,60px); font-weight:700; letter-spacing:-.04em; line-height:1.02; }
-.head .lead{ margin:18px auto 0; max-width:46ch; font-size:clamp(17px,2.2vw,20px); color:var(--ink-soft); letter-spacing:-.01em; }
 .head .scribble{ margin:0 auto 18px; width:96px; height:96px; filter:drop-shadow(0 16px 26px rgba(30,25,60,.25)); }
+.head .hint{ margin-top:14px; font-family:var(--hand); font-size:19px; color:#8a8594; }
 
 /* the app's toolbar, laid on the board under the header */
 .ws-toolbar{ width:max-content; margin:26px auto 8px;
@@ -85,13 +84,12 @@ img,svg{ display:block; max-width:100%; }
 .frame{ position:relative; margin:64px 0; padding:34px 26px 26px;
   border:2px solid rgba(43,43,48,.4); border-radius:6px 4px 7px 3px / 3px 7px 4px 6px; }
 .frame > .flabel{ position:absolute; top:-16px; left:16px; padding:1px 12px;
-  font-family:var(--hand); font-size:21px; color:#57525f; background:#f8f7fd;
-  border-radius:6px; }
+  font-family:var(--hand); font-size:21px; color:#57525f; background:#f8f7fd; border-radius:6px; }
 .frame > .fnote{ position:absolute; top:-14px; right:16px; padding:1px 10px;
   font-family:var(--hand); font-size:15px; color:var(--ink-faint); background:#f8f7fd; }
 .fgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:20px; }
 
-/* CARDS — the tour's hand-drawn boxes, minified */
+/* CARDS — static base */
 .f-card{ position:relative; background:#fff; border:2.5px solid var(--sketch);
   border-radius:12px 7px 14px 6px / 6px 15px 5px 13px;
   padding:18px 20px 17px; box-shadow:0 18px 36px -20px rgba(30,25,60,.35);
@@ -99,7 +97,7 @@ img,svg{ display:block; max-width:100%; }
 .f-card:nth-child(3n){ --tilt:.6deg; } .f-card:nth-child(3n+1){ --tilt:-.5deg; } .f-card:nth-child(4n){ --tilt:.9deg; }
 .f-card.paper-y{ background:#fff9db; } .f-card.paper-v{ background:#f3f0ff; }
 .f-card.paper-g{ background:#ebfbee; } .f-card.paper-b{ background:#e7f5ff; }
-.f-card .tape{ position:absolute; top:-11px; left:50%; width:84px; height:20px;
+.f-card .tape{ position:absolute; top:-11px; left:50%; width:84px; height:20px; z-index:2;
   transform:translateX(-50%) rotate(-2.5deg); background:rgba(255,224,130,.72);
   box-shadow:0 2px 6px -2px rgba(0,0,0,.15); border-radius:2px; }
 .f-card h3{ font-size:16.5px; font-weight:650; letter-spacing:-.02em; margin-bottom:6px; }
@@ -111,7 +109,63 @@ kbd{ font-family:var(--font); font-size:11.5px; font-weight:550; color:var(--ink
   background:linear-gradient(180deg,#fff,#f1f1f4); border:1px solid var(--line); border-bottom-width:2px; }
 .f-card.paper-y kbd,.f-card.paper-v kbd,.f-card.paper-g kbd,.f-card.paper-b kbd{ background:rgba(255,255,255,.8); }
 
-/* hand doodles floating on the board */
+/* CARDS — hover flip: front = copy, back = looping demo */
+.f-card.flip{ background:transparent; border:none; box-shadow:none; padding:0; perspective:1100px; }
+.f-inner{ position:relative; height:100%; transform-style:preserve-3d;
+  transition:transform .62s cubic-bezier(.35,.15,.25,1); }
+.f-card.flip:hover .f-inner, .f-card.flip:focus-within .f-inner{ transform:rotateY(180deg); }
+.f-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  background:#fff; border:2.5px solid var(--sketch);
+  border-radius:12px 7px 14px 6px / 6px 15px 5px 13px;
+  padding:18px 20px 17px; box-shadow:0 18px 36px -20px rgba(30,25,60,.35); min-height:100%; }
+.f-back{ position:absolute; inset:0; transform:rotateY(180deg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; overflow:hidden; }
+.f-card.paper-y .f-face{ background:#fff9db; } .f-card.paper-v .f-face{ background:#f3f0ff; }
+.f-card.paper-g .f-face{ background:#ebfbee; } .f-card.paper-b .f-face{ background:#e7f5ff; }
+.bk-cap{ font-family:var(--hand); font-size:14.5px; color:#7a7686; text-align:center; }
+/* demos idle until hovered */
+.f-back *{ animation-play-state:paused; }
+.f-card.flip:hover .f-back *, .f-card.flip:focus-within .f-back *{ animation-play-state:running; }
+@media(hover:none){ .f-card.flip:hover .f-inner{ transform:none; } }
+@media(prefers-reduced-motion:reduce){
+  .f-card.flip:hover .f-inner,.f-card.flip:focus-within .f-inner{ transform:none; }
+}
+
+/* ---- demo animation primitives ---- */
+@keyframes aDraw{ 0%{stroke-dashoffset:1} 38%,82%{stroke-dashoffset:0} 100%{stroke-dashoffset:1} }
+.a-draw{ stroke-dasharray:1; stroke-dashoffset:1; animation:aDraw 3.4s ease-in-out infinite; }
+@keyframes aMarch{ to{ stroke-dashoffset:-16; } }
+.a-march{ stroke-dasharray:7 9; animation:aMarch .9s linear infinite; }
+@keyframes aCyc{ 0%,29%{opacity:1} 34%,95%{opacity:0} 100%{opacity:1} }
+.a-c{ opacity:0; animation:aCyc 5.1s infinite; }
+.a-c2{ animation-delay:1.7s; } .a-c3{ animation-delay:3.4s; }
+@keyframes aScale{ 0%,100%{transform:scale(.72)} 50%{transform:scale(1.12)} }
+.a-scale{ animation:aScale 2.8s ease-in-out infinite; transform-origin:center; }
+@keyframes aPulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+.a-pulse{ animation:aPulse 1.8s ease-in-out infinite; transform-origin:center; }
+@keyframes aPop{ 0%,12%{transform:scale(0); opacity:0} 22%,78%{transform:scale(1); opacity:1} 90%,100%{transform:scale(0); opacity:0} }
+.a-pop{ animation:aPop 4.2s ease-in-out infinite; transform-origin:center; }
+@keyframes aLine{ 0%{opacity:0} 8%,100%{opacity:1} }
+@keyframes aTab{ 0%,30%{background:#6965db; color:#fff} 33.4%,100%{background:rgba(0,0,0,.08); color:#3c3c44} }
+@keyframes aGrow{ 0%{transform:scaleY(0)} 30%,85%{transform:scaleY(1)} 100%{transform:scaleY(0)} }
+
+/* mini terminal for the code-cell demos */
+.term{ width:100%; max-width:210px; background:#1b1928; border-radius:10px; padding:10px 12px;
+  font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:10.5px; line-height:1.75; color:#d6d3e3;
+  border:1px solid rgba(255,255,255,.12); }
+.term .ln{ opacity:0; animation:aLine 4.4s infinite; white-space:nowrap; overflow:hidden; }
+.term .ln:nth-child(2){ animation-delay:.5s; } .term .ln:nth-child(3){ animation-delay:1s; }
+.term .out{ color:#82e6b5; animation-delay:1.6s !important; }
+/* mini tab bar */
+.mtabs{ display:flex; gap:5px; }
+.mtabs span{ font-size:10.5px; font-weight:600; padding:3px 10px; border-radius:980px; color:#3c3c44;
+  background:rgba(0,0,0,.08); animation:aTab 5.4s infinite; }
+.mtabs span:nth-child(2){ animation-delay:1.8s; } .mtabs span:nth-child(3){ animation-delay:3.6s; }
+.mcanvas{ position:relative; width:100%; max-width:200px; height:64px; background:#fff;
+  border:2px solid var(--sketch); border-radius:7px 4px 8px 4px/4px 8px 4px 7px; overflow:hidden; }
+.mcanvas > svg{ position:absolute; inset:0; width:100%; height:100%; }
+
+/* hand doodles between frames */
 .doodle{ font-family:var(--hand); color:#8a8594; font-size:22px; text-align:center; margin:44px 0 -28px; }
 
 /* CTA + FOOTER */
@@ -141,60 +195,6 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
 .reveal.in{ opacity:1; transform:none; }
 @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } html{ scroll-behavior:auto; } }
 </style>
-
-<script>
-  !(function (t, e) {
-    var o, n, p, r;
-    e.__SV ||
-      ((window.posthog = e),
-      (e._i = []),
-      (e.init = function (i, s, a) {
-        function g(t, e) {
-          var o = e.split(".");
-          2 == o.length && ((t = t[o[0]]), (e = o[1])),
-            (t[e] = function () {
-              t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
-            });
-        }
-        ((p = t.createElement("script")).type = "text/javascript"),
-          (p.crossOrigin = "anonymous"),
-          (p.async = !0),
-          (p.src =
-            s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") +
-            "/static/array.js"),
-          (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(
-            p,
-            r
-          );
-        var u = e;
-        for (
-          void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
-            u.people = u.people || [],
-            u.toString = function (t) {
-              var e = "posthog";
-              return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e;
-            },
-            u.people.toString = function () {
-              return u.toString(1) + ".people (stub)";
-            },
-            o =
-              "init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(
-                " "
-              ),
-            n = 0;
-          n < o.length;
-          n++
-        )
-          g(u, o[n]);
-        e._i.push([i, s, a]);
-      }),
-      (e.__SV = 1));
-  })(document, window.posthog || []);
-  posthog.init("phc_zGnXS62Y7nMUn6hdmCxxWu7nXWWpE79p64LmVKPt7ikV", {
-    api_host: "https://us.i.posthog.com",
-    defaults: "2026-05-30",
-  });
-</script>
 </head>
 <body>
 
@@ -216,9 +216,9 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
 <header class="head">
   <img class="scribble" src="assets/logo-192.png" alt="" width="96" height="96">
   <h1>The whole board.</h1>
+  <p class="hint">hover a card to see it in action ↻</p>
 </header>
 
-<!-- the app's toolbar rides along as you browse -->
 <div class="ws-toolbar" aria-hidden="true">
   <span class="tb" title="Hand (H)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 11.5V6a1.2 1.2 0 0 1 2.4 0v4.5m0-5.6V4.2a1.2 1.2 0 0 1 2.4 0v6.3m0-5.3a1.2 1.2 0 0 1 2.4 0v6.3m0-4.3a1.2 1.2 0 0 1 2.4.4v6.4c0 3.7-2.5 6-5.9 6-2.7 0-4-1.2-5.3-3.5l-2-3.6c-.5-.9.7-1.8 1.5-1.1l2.1 1.7"/></svg></span>
   <span class="tb active" title="Select (V)"><svg viewBox="0 0 24 24" fill="none"><path d="M5.5 3.5 19 13l-5.6.7-3.1 5z" fill="currentColor"/></svg></span>
@@ -246,27 +246,91 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <span class="flabel">Draw ✎</span>
     <span class="fnote">every stroke is native Core Graphics</span>
     <div class="fgrid">
-      <div class="f-card"><span class="tape"></span>
-        <h3>The full toolset</h3>
-        <p>Select, rectangle, ellipse, diamond, arrow, line, freehand pen, text, eraser — plus lasso select, laser pointer, and frames in the more-tools menu.</p>
-        <div class="keys"><kbd>V</kbd><kbd>R</kbd><kbd>O</kbd><kbd>D</kbd><kbd>A</kbd><kbd>L</kbd><kbd>P</kbd><kbd>T</kbd><kbd>E</kbd></div>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>The full toolset</h3>
+            <p>Select, rectangle, ellipse, diamond, arrow, line, freehand pen, text, eraser — plus lasso select, laser pointer, and frames in the more-tools menu.</p>
+            <div class="keys"><kbd>V</kbd><kbd>R</kbd><kbd>O</kbd><kbd>D</kbd><kbd>A</kbd><kbd>L</kbd><kbd>P</kbd><kbd>T</kbd><kbd>E</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 240 110" width="220" fill="none" stroke="#2b2b30" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="14" y="30" width="58" height="44" rx="6" pathLength="1" class="a-draw"/>
+              <ellipse cx="120" cy="52" rx="31" ry="23" pathLength="1" class="a-draw" style="animation-delay:.7s"/>
+              <path d="M188 28 214 52 188 76 162 52Z" pathLength="1" class="a-draw" style="animation-delay:1.4s"/>
+            </svg>
+            <span class="bk-cap">R · O · D — everything draws by hand</span>
+          </div>
+        </div>
       </div>
-      <div class="f-card paper-y">
-        <h3>Really hand-drawn</h3>
-        <p>A faithful Swift port of the rough.js renderer — seeded jitter, sketchy ellipses, three sloppiness levels: <b>Architect · Artist · Cartoonist</b>.</p>
+
+      <div class="f-card flip paper-y">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Really hand-drawn</h3>
+            <p>A faithful Swift port of the rough.js renderer — seeded jitter, sketchy ellipses, three sloppiness levels: <b>Architect · Artist · Cartoonist</b>.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 96" width="205" fill="none" stroke="#2b2b30" stroke-width="2.3" stroke-linecap="round">
+              <path d="M22 20 C70 17 150 21 198 18" pathLength="1" class="a-draw"/>
+              <path d="M22 50 C55 42 92 58 128 46 S180 52 198 46" pathLength="1" class="a-draw" style="animation-delay:.55s"/>
+              <path d="M22 82 C40 66 62 94 88 72 S130 96 158 70 190 88 198 74" pathLength="1" class="a-draw" style="animation-delay:1.1s"/>
+            </svg>
+            <span class="bk-cap">Architect → Artist → Cartoonist</span>
+          </div>
+        </div>
       </div>
-      <div class="f-card">
-        <h3>Fills &amp; strokes</h3>
-        <p>Hachure, cross-hatch, and solid fills. Solid, dashed, and dotted strokes at any width — the classic Excalidraw swatch palette included.</p>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Fills &amp; strokes</h3>
+            <p>Hachure, cross-hatch, and solid fills. Solid, dashed, and dotted strokes at any width — the classic Excalidraw swatch palette included.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none" stroke-linecap="round">
+              <g class="a-c"><rect x="26" y="16" width="76" height="56" rx="5" stroke="#2b2b30" stroke-width="2.3"/>
+                <path d="M32 66 66 20M44 70 78 24M56 72 90 26M68 72 98 32" stroke="#6965db" stroke-width="1.6"/></g>
+              <g class="a-c a-c2"><rect x="26" y="16" width="76" height="56" rx="5" stroke="#2b2b30" stroke-width="2.3"/>
+                <path d="M32 66 66 20M48 70 86 24M64 72 98 30M34 26 78 70M50 22 96 66" stroke="#e8590c" stroke-width="1.5"/></g>
+              <g class="a-c a-c3"><rect x="26" y="16" width="76" height="56" rx="5" fill="#b2f2bb" stroke="#2b2b30" stroke-width="2.3"/></g>
+              <path d="M130 28h64" stroke="#2b2b30" stroke-width="2.6" class="a-c"/>
+              <path d="M130 46h64" stroke="#2b2b30" stroke-width="2.6" stroke-dasharray="8 7" class="a-c a-c2"/>
+              <path d="M130 64h64" stroke="#2b2b30" stroke-width="2.6" stroke-dasharray="1.5 8" class="a-c a-c3"/>
+              <text x="112" y="100" font-size="11" fill="#8a8594" text-anchor="middle" font-family="var(--hand)">hachure · cross-hatch · solid</text>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="f-card paper-b">
-        <h3>Text that scales</h3>
-        <p>Resize a text box and the font scales to fit. Four families — hand-drawn, normal, code, fancy — and double-click anywhere to start typing.</p>
+
+      <div class="f-card flip paper-b">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Text that scales</h3>
+            <p>Resize a text box and the font scales to fit. Four families — hand-drawn, normal, code, fancy — and double-click anywhere to start typing.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 200 110" width="190" fill="none">
+              <g class="a-scale">
+                <rect x="55" y="25" width="90" height="60" rx="4" stroke="#6965db" stroke-width="1.6" stroke-dasharray="5 4"/>
+                <circle cx="55" cy="25" r="4" fill="#fff" stroke="#6965db" stroke-width="1.6"/>
+                <circle cx="145" cy="25" r="4" fill="#fff" stroke="#6965db" stroke-width="1.6"/>
+                <circle cx="55" cy="85" r="4" fill="#fff" stroke="#6965db" stroke-width="1.6"/>
+                <circle cx="145" cy="85" r="4" fill="#fff" stroke="#6965db" stroke-width="1.6"/>
+                <text x="100" y="70" font-size="38" font-weight="600" fill="#2b2b30" text-anchor="middle" font-family="-apple-system,sans-serif">Aa</text>
+              </g>
+            </svg>
+            <span class="bk-cap">the font follows the box</span>
+          </div>
+        </div>
       </div>
+
       <div class="f-card">
         <h3>Pressure pen</h3>
         <p>The freehand tool renders perfect-freehand style strokes — width varies with speed, or switch to uniform in the inspector.</p>
       </div>
+
       <div class="f-card paper-g">
         <h3>Liquid Glass UI</h3>
         <p>Toolbar and inspector float in macOS 26's native <b>glassEffect</b> — tools top-center, style inspector docked left.</p>
@@ -279,18 +343,76 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <span class="flabel">Connect ⟶</span>
     <span class="fnote">diagrams that survive a rethink</span>
     <div class="fgrid">
-      <div class="f-card paper-v">
-        <h3>Arrows that bind</h3>
-        <p>Drop an endpoint on any shape and the arrow <b>binds</b> — snapping to the edge and re-routing when either end moves or resizes.</p>
+
+      <div class="f-card flip paper-v">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Arrows that bind</h3>
+            <p>Drop an endpoint on any shape and the arrow <b>binds</b> — snapping to the edge and re-routing when either end moves or resizes.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 230 110" width="215" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <defs><marker id="mArr" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+                <path d="M1 1 L7.5 4 L1 7" fill="none" stroke="#2b2b30" stroke-width="1.5"/></marker></defs>
+              <rect x="12" y="34" width="56" height="40" rx="6" fill="#d7e9ff" stroke="#2b2b30" stroke-width="2.2"/>
+              <g>
+                <rect x="158" y="14" width="56" height="40" rx="6" fill="#ffe1ec" stroke="#2b2b30" stroke-width="2.2"/>
+                <animateTransform attributeName="transform" type="translate" values="0 0; 0 44; 0 0" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines=".45 .05 .55 .95;.45 .05 .55 .95"/>
+              </g>
+              <path d="M70 52 C102 46 122 40 154 36" stroke="#2b2b30" stroke-width="2.2" marker-end="url(#mArr)">
+                <animate attributeName="d"
+                  values="M70 52 C102 46 122 40 154 36; M70 56 C102 66 122 76 154 80; M70 52 C102 46 122 40 154 36"
+                  dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines=".45 .05 .55 .95;.45 .05 .55 .95"/>
+              </path>
+              <text x="115" y="103" font-size="11" fill="#8a8594" text-anchor="middle">move the box — the arrow follows</text>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="f-card"><span class="tape"></span>
-        <h3>Elbow arrows</h3>
-        <p>The "checker" arrow keeps clean right angles through every reroute. Five arrowhead styles per end: arrow, triangle, dot, bar, none.</p>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>Elbow arrows</h3>
+            <p>The "checker" arrow keeps clean right angles through every reroute. Five arrowhead styles per end: arrow, triangle, dot, bar, none.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 230 110" width="215" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <defs><marker id="mArr2" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto">
+                <path d="M1 1 L7.5 4 L1 7" fill="none" stroke="#2b2b30" stroke-width="1.5"/></marker></defs>
+              <circle cx="26" cy="26" r="11" fill="#d3f2dc" stroke="#2b2b30" stroke-width="2.2"/>
+              <rect x="182" y="70" width="34" height="26" rx="5" fill="#fff3c4" stroke="#2b2b30" stroke-width="2.2"/>
+              <path d="M38 26 L110 26 L110 83 L178 83" stroke="#2b2b30" stroke-width="2.3" marker-end="url(#mArr2)">
+                <animate attributeName="d"
+                  values="M38 26 L110 26 L110 83 L178 83; M38 26 L148 26 L148 83 L178 83; M38 26 L74 26 L74 83 L178 83; M38 26 L110 26 L110 83 L178 83"
+                  dur="4s" repeatCount="indefinite" calcMode="spline" keySplines=".5 0 .5 1;.5 0 .5 1;.5 0 .5 1"/>
+              </path>
+              <text x="115" y="106" font-size="11" fill="#8a8594" text-anchor="middle">right angles, always</text>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="f-card">
-        <h3>Frames &amp; groups</h3>
-        <p>Labeled container frames carry their contents when moved. <b>⌘G</b> to group, plus align &amp; distribute across any multi-selection.</p>
-        <div class="keys"><kbd>⌘</kbd><kbd>G</kbd></div>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Frames &amp; groups</h3>
+            <p>Labeled container frames carry their contents when moved. <b>⌘G</b> to group, plus align &amp; distribute across any multi-selection.</p>
+            <div class="keys"><kbd>⌘</kbd><kbd>G</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 230 110" width="215" fill="none">
+              <g>
+                <animateTransform attributeName="transform" type="translate" values="0 0; 52 0; 0 0" dur="3.4s" repeatCount="indefinite" calcMode="spline" keySplines=".45 .05 .55 .95;.45 .05 .55 .95"/>
+                <rect x="16" y="22" width="120" height="72" rx="4" stroke="#57525f" stroke-width="1.8" stroke-dasharray="6 5" fill="rgba(255,255,255,.5)"/>
+                <text x="22" y="16" font-size="11" fill="#57525f">Frame</text>
+                <rect x="30" y="38" width="34" height="24" rx="4" fill="#d7e9ff" stroke="#2b2b30" stroke-width="1.8"/>
+                <circle cx="102" cy="66" r="14" fill="#ffe1ec" stroke="#2b2b30" stroke-width="1.8"/>
+              </g>
+              <text x="115" y="108" font-size="11" fill="#8a8594" text-anchor="middle">contents travel with the frame</text>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -301,19 +423,57 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
   <section class="frame reveal">
     <span class="flabel">Bring your stuff 📎</span>
     <div class="fgrid">
-      <div class="f-card paper-b"><span class="tape"></span>
-        <h3>Files as live cards</h3>
-        <p>Press <b>/</b> to Spotlight-search your Mac and drop any file or folder in — real Quick Look thumbnails, modified dates, a <i>Missing</i> badge if it moves.</p>
-        <div class="keys"><kbd>/</kbd><kbd>Space</kbd></div>
+
+      <div class="f-card flip paper-b">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>Files as live cards</h3>
+            <p>Press <b>/</b> to Spotlight-search your Mac and drop any file or folder in — real Quick Look thumbnails, modified dates, a <i>Missing</i> badge if it moves.</p>
+            <div class="keys"><kbd>/</kbd><kbd>Space</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <g class="a-pop">
+                <rect x="66" y="14" width="88" height="70" rx="8" fill="#fff" stroke="#2b2b30" stroke-width="2.2"/>
+                <rect x="78" y="24" width="64" height="36" rx="4" fill="#d7e9ff" stroke="#2b2b30" stroke-width="1.4"/>
+                <path d="M84 54 100 38 112 50 122 42 136 54" stroke="#2b2b30" stroke-width="1.4" fill="none"/>
+                <text x="110" y="76" font-size="10.5" fill="#3c3c44" text-anchor="middle" font-weight="600">deck.key</text>
+              </g>
+              <text x="110" y="103" font-size="11" fill="#8a8594" text-anchor="middle">/ → search → space to peek</text>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="f-card paper-v">
-        <h3>Obsidian inside</h3>
-        <p>Notes drop in as <b>obsidian://</b> cards that open straight into your vault. The sidebar shelf keeps vault search one keystroke away.</p>
+
+      <div class="f-card flip paper-v">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Obsidian inside</h3>
+            <p>Notes drop in as <b>obsidian://</b> cards that open straight into your vault. The sidebar shelf keeps vault search one keystroke away.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <g class="a-pulse" style="transform-origin:44px 52px">
+                <path d="M44 16 66 30 71 58 51 76 29 69 22 38z" fill="#7c5cd6" stroke="#2b2b30" stroke-width="1.8"/>
+                <path d="M44 16 37 70M44 16l22 14M44 16 22 38" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+              </g>
+              <path d="M80 48 h36" stroke="#7c5cd6" stroke-width="2" stroke-dasharray="5 6" class="a-march"/>
+              <g class="a-pop" style="animation-delay:.5s">
+                <rect x="124" y="24" width="80" height="52" rx="7" fill="#fff" stroke="#2b2b30" stroke-width="2"/>
+                <text x="164" y="45" font-size="10" fill="#3c3c44" text-anchor="middle" font-weight="600">Daily/07-02.md</text>
+                <text x="164" y="62" font-size="9" fill="#7c5cd6" text-anchor="middle">obsidian://open</text>
+              </g>
+              <text x="110" y="103" font-size="11" fill="#8a8594" text-anchor="middle">double-click → your vault</text>
+            </svg>
+          </div>
+        </div>
       </div>
+
       <div class="f-card">
         <h3>Web links &amp; images</h3>
         <p>Paste a URL for a linked card, drag images straight onto the canvas, and Quick Look anything with <b>Space</b>.</p>
       </div>
+
       <div class="f-card">
         <h3>Finder native</h3>
         <p>Right-click any file card to Open or Reveal in Finder. Drag from Finder in; everything stays a real reference, never a copy.</p>
@@ -326,19 +486,68 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <span class="flabel">Run it ▶</span>
     <span class="fnote">the canvas can execute</span>
     <div class="fgrid">
-      <div class="f-card paper-g"><span class="tape"></span>
-        <h3>Live code cells</h3>
-        <p>Drop runnable cells in <b>shell, Python, JavaScript, or Ruby</b> right on the board — output renders inline underneath.</p>
-        <div class="keys"><kbd>⌘</kbd><kbd>↵</kbd></div>
+
+      <div class="f-card flip paper-g">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>Live code cells</h3>
+            <p>Drop runnable cells in <b>shell, Python, JavaScript, or Ruby</b> right on the board — output renders inline underneath.</p>
+            <div class="keys"><kbd>⌘</kbd><kbd>↵</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <div class="term">
+              <div class="ln"><span style="color:#c792ea">for</span> i <span style="color:#c792ea">in</span> 1 2 3; <span style="color:#c792ea">do</span></div>
+              <div class="ln">&nbsp;&nbsp;echo "run $i"</div>
+              <div class="ln"><span style="color:#c792ea">done</span></div>
+              <div class="ln out">▸ run 1 · run 2 · run 3</div>
+            </div>
+            <span class="bk-cap">⌘↵ runs it right on the board</span>
+          </div>
+        </div>
       </div>
-      <div class="f-card">
-        <h3>Arrows become pipes</h3>
-        <p>Connect two cells and the arrow turns into a <b>data pipe</b> — run the graph and stdout flows into the next cell's stdin.</p>
-        <div class="keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>↵</kbd></div>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Arrows become pipes</h3>
+            <p>Connect two cells and the arrow turns into a <b>data pipe</b> — run the graph and stdout flows into the next cell's stdin.</p>
+            <div class="keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>↵</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <rect x="12" y="30" width="62" height="44" rx="8" fill="#1b1928" stroke="#2b2b30" stroke-width="2"/>
+              <text x="43" y="56" font-size="11" fill="#82e6b5" text-anchor="middle" font-family="Menlo,monospace">py</text>
+              <rect x="146" y="30" width="62" height="44" rx="8" fill="#1b1928" stroke="#2b2b30" stroke-width="2"/>
+              <text x="177" y="56" font-size="11" fill="#82e6b5" text-anchor="middle" font-family="Menlo,monospace">jq</text>
+              <path d="M76 52 h66" stroke="#a78bfa" stroke-width="2.6" class="a-march"/>
+              <path d="M136 46 l8 6 -8 6" stroke="#a78bfa" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="110" y="98" font-size="11" fill="#8a8594" text-anchor="middle">stdout → stdin, live</text>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="f-card paper-y">
-        <h3>Charts &amp; QR codes</h3>
-        <p>Native chart nodes render live from piped data, and QR nodes turn any link into scannable ink — all in the same hand-drawn style.</p>
+
+      <div class="f-card flip paper-y">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Charts &amp; QR codes</h3>
+            <p>Native chart nodes render live from piped data, and QR nodes turn any link into scannable ink — all in the same hand-drawn style.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <path d="M24 88 h110" stroke="#2b2b30" stroke-width="2"/>
+              <rect x="34" y="48" width="16" height="40" fill="#d7e9ff" stroke="#2b2b30" stroke-width="1.8" style="transform-origin:42px 88px" class="a-grow" />
+              <rect x="62" y="30" width="16" height="58" fill="#b2f2bb" stroke="#2b2b30" stroke-width="1.8" style="transform-origin:70px 88px; animation-delay:.25s" class="a-grow"/>
+              <rect x="90" y="58" width="16" height="30" fill="#ffe1ec" stroke="#2b2b30" stroke-width="1.8" style="transform-origin:98px 88px; animation-delay:.5s" class="a-grow"/>
+              <rect x="118" y="40" width="16" height="48" fill="#fff3c4" stroke="#2b2b30" stroke-width="1.8" style="transform-origin:126px 88px; animation-delay:.75s" class="a-grow"/>
+              <g class="a-pop" style="animation-delay:1s">
+                <rect x="156" y="34" width="48" height="48" rx="4" fill="#fff" stroke="#2b2b30" stroke-width="1.8"/>
+                <path d="M162 40h10v10h-10zM192 40h6v6h-6zM162 70h8v8h-8zM178 46h6v14h-6zM186 58h12v6h-12zM170 58h4v12h-4zM190 70h8v8h-8z" fill="#2b2b30"/>
+              </g>
+              <text x="110" y="106" font-size="11" fill="#8a8594" text-anchor="middle">live charts · scannable ink</text>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -347,19 +556,57 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
   <section class="frame reveal">
     <span class="flabel">Organize ⌘</span>
     <div class="fgrid">
-      <div class="f-card paper-b">
-        <h3>Boards in tabs</h3>
-        <p>As many boards as you're thinking about — named, reorderable tabs, each with its own autosave and per-board export.</p>
+
+      <div class="f-card flip paper-b">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Boards in tabs</h3>
+            <p>As many boards as you're thinking about — named, reorderable tabs, each with its own autosave and per-board export.</p>
+          </div>
+          <div class="f-face f-back">
+            <div class="mtabs"><span>Roadmap</span><span>Sys</span><span>Scratch</span></div>
+            <div class="mcanvas">
+              <svg class="a-c" viewBox="0 0 200 64" fill="none" stroke="#2b2b30" stroke-width="1.8">
+                <rect x="14" y="20" width="40" height="22" rx="4" fill="#d7e9ff"/><rect x="80" y="20" width="40" height="22" rx="4" fill="#fff3c4"/><rect x="146" y="20" width="40" height="22" rx="4" fill="#d3f2dc"/>
+                <path d="M54 31h24m-6-4 6 4-6 4M120 31h24m-6-4 6 4-6 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg class="a-c a-c2" viewBox="0 0 200 64" fill="none" stroke="#2b2b30" stroke-width="1.8">
+                <rect x="80" y="6" width="40" height="18" rx="4" fill="#eee9ff"/><rect x="30" y="38" width="40" height="18" rx="4" fill="#d7e9ff"/><rect x="130" y="38" width="40" height="18" rx="4" fill="#ffe1ec"/>
+                <path d="M92 24 60 38M108 24l32 14" stroke-linecap="round"/></svg>
+              <svg class="a-c a-c3" viewBox="0 0 200 64" fill="none">
+                <path d="M20 40c12-20 22 8 36-4s18-14 32-3 22 8 32-5" stroke="#6965db" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M150 22l5 10 11 2-8 7 2 11-10-5-10 5 2-11-8-7 11-2z" fill="#fff3c4" stroke="#2b2b30" stroke-width="1.6"/></svg>
+            </div>
+            <span class="bk-cap">every thread gets a board</span>
+          </div>
+        </div>
       </div>
-      <div class="f-card"><span class="tape"></span>
-        <h3>Three backdrops</h3>
-        <p><b>Solid white</b> for focus, a <b>light wash</b> that lets the wallpaper breathe, or <b>fully transparent</b> — straight onto the desktop.</p>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>Three backdrops</h3>
+            <p><b>Solid white</b> for focus, a <b>light wash</b> that lets the wallpaper breathe, or <b>fully transparent</b> — straight onto the desktop.</p>
+          </div>
+          <div class="f-face f-back">
+            <div class="mcanvas" style="height:84px; max-width:190px">
+              <div class="a-c" style="position:absolute;inset:0;background:#fff"></div>
+              <div class="a-c a-c2" style="position:absolute;inset:0;background:linear-gradient(135deg,#cfd9ff,#f0d5e8 70%,#ffe9c9)"><div style="position:absolute;inset:0;background:rgba(255,255,255,.8)"></div></div>
+              <div class="a-c a-c3" style="position:absolute;inset:0;background:linear-gradient(135deg,#aebfff,#eab8d8 60%,#ffd9a0)"><span style="position:absolute;top:6px;right:8px;font-size:12px">📁</span></div>
+              <svg viewBox="0 0 190 84" style="position:absolute;inset:0" fill="none">
+                <path d="M28 52c14-22 26 10 44-6s28-14 46-2 26 4 42-8" stroke="#2b2b30" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="bk-cap">solid → wash → transparent</span>
+          </div>
+        </div>
       </div>
+
       <div class="f-card">
         <h3>Idle / edit dance</h3>
         <p>Idle, clicks pass through to Finder and your drawings rest on the wallpaper. <b>⌥⌘W</b> flips the desktop into a live board.</p>
         <div class="keys"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>W</kbd></div>
       </div>
+
       <div class="f-card paper-g">
         <h3>Menu-bar light</h3>
         <p>No Dock icon, no window. A scribble in the status bar, configurable global hotkeys, autosave to Application Support.</p>
@@ -372,17 +619,54 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <span class="flabel">Ship it 🚀</span>
     <span class="fnote">sketch → hand-off</span>
     <div class="fgrid">
+
       <div class="f-card">
         <h3>PNG &amp; SVG</h3>
         <p>Crisp raster or true-vector export, pixel-matched to the canvas — per board, from the tab's right-click menu.</p>
       </div>
-      <div class="f-card paper-v"><span class="tape"></span>
-        <h3>HTML → your agents</h3>
-        <p><b>Export as HTML</b> hands the whole board to Claude or any coding agent — every shape, label, and connection in a format it can read.</p>
+
+      <div class="f-card flip paper-v">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>HTML → your agents</h3>
+            <p><b>Export as HTML</b> hands the whole board to Claude or any coding agent — every shape, label, and connection in a format it can read.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <rect x="12" y="28" width="64" height="48" rx="7" fill="#fff" stroke="#2b2b30" stroke-width="2"/>
+              <rect x="20" y="36" width="20" height="13" rx="3" fill="#d7e9ff" stroke="#2b2b30" stroke-width="1.2"/>
+              <circle cx="58" cy="60" r="8" fill="#ffe1ec" stroke="#2b2b30" stroke-width="1.2"/>
+              <path d="M40 43 50 56" stroke="#2b2b30" stroke-width="1.2"/>
+              <path d="M80 52 h52" stroke="#7c5cd6" stroke-width="2.4" class="a-march"/>
+              <text x="106" y="44" font-size="10" fill="#7c5cd6" text-anchor="middle" font-family="Menlo,monospace">&lt;/&gt;</text>
+              <g class="a-pulse" style="transform-origin:172px 52px">
+                <circle cx="172" cy="52" r="21" fill="#f3f0ff" stroke="#2b2b30" stroke-width="2"/>
+                <path d="M172 38v28M158 52h28M162 42l20 20M182 42l-20 20" stroke="#6965db" stroke-width="2.4" stroke-linecap="round"/>
+              </g>
+              <text x="110" y="102" font-size="11" fill="#8a8594" text-anchor="middle">sketch it, then hand it off</text>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="f-card">
-        <h3>Excalidraw round-trip</h3>
-        <p>Boards read and write the <b>.excalidraw</b> JSON format, so everything interoperates with Excalidraw itself.</p>
+
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Excalidraw round-trip</h3>
+            <p>Boards read and write the <b>.excalidraw</b> JSON format, so everything interoperates with Excalidraw itself.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="14" y="32" width="52" height="44" rx="9" fill="#f7f4ec" stroke="#2b2b30" stroke-width="2"/>
+              <path d="M28 62c5-14 8 6 12-4s6-8 12 0" stroke="#2b2b30" stroke-width="1.8"/>
+              <rect x="154" y="32" width="52" height="44" rx="9" fill="#e7f5ff" stroke="#2b2b30" stroke-width="2"/>
+              <text x="180" y="60" font-size="13" fill="#2b2b30" text-anchor="middle" font-weight="700">Ex</text>
+              <path d="M72 44 H146 m-8 -6 8 6 -8 6" stroke="#6965db" stroke-width="2.2" class="a-march"/>
+              <path d="M148 66 H74 m8 6 -8 -6 8 -6" stroke="#e8590c" stroke-width="2.2" class="a-march" style="animation-direction:reverse"/>
+              <text x="110" y="100" font-size="11" fill="#8a8594" text-anchor="middle">.excalidraw, both ways</text>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -421,24 +705,6 @@ const io = new IntersectionObserver((es)=>{
   for(const e of es){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }
 }, {rootMargin:'0px 0px -6% 0px', threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-/* ---------- posthog event tracking ---------- */
-posthog.capture('features_page_viewed');
-
-document.querySelector('.nav a.nav-cta')?.addEventListener('click', function(){
-  posthog.capture('download_clicked', { location: 'nav', page: 'features' });
-});
-
-document.querySelectorAll('.cta .btn').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    if(btn.href && btn.href.indexOf('.dmg') !== -1){
-      posthog.capture('download_clicked', { location: 'cta', page: 'features' });
-      posthog.capture('features_cta_clicked', { label: btn.textContent.trim(), type: 'download' });
-    } else {
-      posthog.capture('features_cta_clicked', { label: btn.textContent.trim(), type: 'secondary' });
-    }
-  });
-});
 </script>
 </body>
 </html>
