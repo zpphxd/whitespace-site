@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Features — Whitespace</title>
 <meta name="description" content="Every tool in Whitespace, pinned up on one static board — drawing, binding arrows, files, Obsidian, live code cells, boards in tabs, and export to agents.">
+<meta property="og:title" content="Features — Whitespace">
+<meta property="og:description" content="Every tool in Whitespace on one board — drawing, binding arrows, files, Obsidian, live code cells, and export to agents.">
+<meta property="og:url" content="https://whitespace-site.vercel.app/features.html">
+<meta property="og:image" content="https://whitespace-site.vercel.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whitespace-site.vercel.app/assets/og.png">
 <link rel="icon" type="image/png" href="assets/logo-64.png">
 <link rel="apple-touch-icon" href="assets/logo-192.png">
 
@@ -132,6 +141,60 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
 .reveal.in{ opacity:1; transform:none; }
 @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } html{ scroll-behavior:auto; } }
 </style>
+
+<script>
+  !(function (t, e) {
+    var o, n, p, r;
+    e.__SV ||
+      ((window.posthog = e),
+      (e._i = []),
+      (e.init = function (i, s, a) {
+        function g(t, e) {
+          var o = e.split(".");
+          2 == o.length && ((t = t[o[0]]), (e = o[1])),
+            (t[e] = function () {
+              t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+            });
+        }
+        ((p = t.createElement("script")).type = "text/javascript"),
+          (p.crossOrigin = "anonymous"),
+          (p.async = !0),
+          (p.src =
+            s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") +
+            "/static/array.js"),
+          (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(
+            p,
+            r
+          );
+        var u = e;
+        for (
+          void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
+            u.people = u.people || [],
+            u.toString = function (t) {
+              var e = "posthog";
+              return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e;
+            },
+            u.people.toString = function () {
+              return u.toString(1) + ".people (stub)";
+            },
+            o =
+              "init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(
+                " "
+              ),
+            n = 0;
+          n < o.length;
+          n++
+        )
+          g(u, o[n]);
+        e._i.push([i, s, a]);
+      }),
+      (e.__SV = 1));
+  })(document, window.posthog || []);
+  posthog.init("phc_zGnXS62Y7nMUn6hdmCxxWu7nXWWpE79p64LmVKPt7ikV", {
+    api_host: "https://us.i.posthog.com",
+    defaults: "2026-05-30",
+  });
+</script>
 </head>
 <body>
 
@@ -153,8 +216,6 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
 <header class="head">
   <img class="scribble" src="assets/logo-192.png" alt="" width="96" height="96">
   <h1>The whole board.</h1>
-  <p class="lead">Every tool in Whitespace, pinned up in one place —
-     grouped in frames, the way you'd lay it out on the canvas.</p>
 </header>
 
 <!-- the app's toolbar rides along as you browse -->
@@ -279,10 +340,6 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         <h3>Charts &amp; QR codes</h3>
         <p>Native chart nodes render live from piped data, and QR nodes turn any link into scannable ink — all in the same hand-drawn style.</p>
       </div>
-      <div class="f-card">
-        <h3>Notebook interop</h3>
-        <p>Import and export <b>.ipynb</b> — your board's cells round-trip with Jupyter notebooks.</p>
-      </div>
     </div>
   </section>
 
@@ -364,6 +421,24 @@ const io = new IntersectionObserver((es)=>{
   for(const e of es){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }
 }, {rootMargin:'0px 0px -6% 0px', threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- posthog event tracking ---------- */
+posthog.capture('features_page_viewed');
+
+document.querySelector('.nav a.nav-cta')?.addEventListener('click', function(){
+  posthog.capture('download_clicked', { location: 'nav', page: 'features' });
+});
+
+document.querySelectorAll('.cta .btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    if(btn.href && btn.href.indexOf('.dmg') !== -1){
+      posthog.capture('download_clicked', { location: 'cta', page: 'features' });
+      posthog.capture('features_cta_clicked', { label: btn.textContent.trim(), type: 'download' });
+    } else {
+      posthog.capture('features_cta_clicked', { label: btn.textContent.trim(), type: 'secondary' });
+    }
+  });
+});
 </script>
 </body>
 </html>
