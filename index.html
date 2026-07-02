@@ -63,16 +63,22 @@ h1,h2,h3{ letter-spacing:-.03em; font-weight:650; line-height:1.05; }
 .sw-plain{ color:var(--ink-faint); }
 .sw-script{ font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;
   font-weight:600; font-size:1.06em; line-height:1.05; padding:0 .14em .12em .1em;
-  background:linear-gradient(115deg,var(--accent) 10%,var(--accent-2) 90%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
+  color:var(--accent);                       /* wet ink while the pen writes */
   clip-path:inset(-30% 100% -35% 0); }
+.sw-grad{                                    /* the finished gradient, faded in after */
+  background:linear-gradient(120deg,var(--accent) 0%,var(--accent-2) 55%,#f0a5c8 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  clip-path:none; opacity:0; }
 .sw-eraser{ position:absolute; left:0; top:50%; width:.9em;
   transform:translate(-130%,-58%) rotate(-9deg); opacity:0; pointer-events:none;
   filter:drop-shadow(0 10px 16px rgba(30,25,60,.3)); }
+.sw-pen{ position:absolute; left:0; top:50%; width:.62em; opacity:0; pointer-events:none;
+  transform:translate(-15%,-88%); filter:drop-shadow(0 8px 12px rgba(30,25,60,.28)); }
 @media(prefers-reduced-motion:reduce){
   .sw-plain{ visibility:hidden; }
-  .sw-script{ clip-path:none; }
-  .sw-eraser{ display:none; }
+  .sw-script{ visibility:hidden; }
+  .sw-script.sw-grad{ visibility:visible; opacity:1; }
+  .sw-eraser,.sw-pen{ display:none; }
 }
 
 .btn{ display:inline-flex; align-items:center; gap:9px; font-size:17px; font-weight:550; letter-spacing:-.01em;
@@ -381,11 +387,19 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
       <span class="swap" aria-hidden="true">
         <span class="sw-plain" id="swPlain">just a desktop.</span>
         <span class="sw-script" id="swScript">the canvas.</span>
+        <span class="sw-script sw-grad" id="swGrad">the canvas.</span>
         <span class="sw-eraser" id="swEraser">
           <svg viewBox="0 0 132 74" fill="none">
             <rect x="5" y="6" width="122" height="42" rx="10" fill="#f7f4ec" stroke="#2b2b30" stroke-width="4"/>
             <rect x="5" y="38" width="122" height="30" rx="9" fill="#e8b4c8" stroke="#2b2b30" stroke-width="4"/>
             <path d="M28 24h56" stroke="#cdc6b6" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="sw-pen" id="swPen">
+          <svg viewBox="0 0 64 68" fill="none" stroke="#2b2b30" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 62 L14 44 L28 56 Z" fill="#6965db"/>
+            <path d="M14 44 L40 11 a8 8 0 0 1 12 10 L28 56 Z" fill="#f7f4ec"/>
+            <path d="M19 40 L32 51" stroke="#cdc6b6"/>
           </svg>
         </span>
       </span>
@@ -718,10 +732,14 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 (function(){
   const plain = document.getElementById('swPlain');
   const script = document.getElementById('swScript');
+  const grad = document.getElementById('swGrad');
   const eraser = document.getElementById('swEraser');
+  const pen = document.getElementById('swPen');
   if(!plain || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const E = 950, W = 1100;   // erase + write durations
+  const E = 950, W = 1350;   // erase + write durations
+  const writeEase = 'cubic-bezier(.4,.05,.6,.95)';
   setTimeout(()=>{
+    // 1 · erase "just a desktop."
     eraser.style.opacity = 1;
     eraser.animate([
       { left:'-6%',  transform:'translate(-60%,-58%) rotate(-9deg)' },
@@ -732,12 +750,34 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       { clipPath:'inset(-15% 0% -15% 0%)' },
       { clipPath:'inset(-15% 0% -15% 100%)' },
     ], { duration:E, easing:'ease-in-out', fill:'forwards' });
+
     setTimeout(()=>{
+      // 2 · the pen writes "the canvas." in wet ink
       eraser.style.transition = 'opacity .3s'; eraser.style.opacity = 0;
+      pen.style.opacity = 1;
+      pen.animate([
+        { left:'2%',   transform:'translate(-15%,-86%) rotate(0deg)' },
+        { left:'27%',  transform:'translate(-15%,-80%) rotate(4deg)' },
+        { left:'52%',  transform:'translate(-15%,-90%) rotate(-3deg)' },
+        { left:'77%',  transform:'translate(-15%,-81%) rotate(4deg)' },
+        { left:'103%', transform:'translate(-15%,-87%) rotate(0deg)' },
+      ], { duration:W, easing:writeEase, fill:'forwards' });
       script.animate([
         { clipPath:'inset(-30% 100% -35% 0)' },
         { clipPath:'inset(-30% -8% -35% 0)' },
-      ], { duration:W, easing:'cubic-bezier(.3,.1,.3,1)', fill:'forwards' });
+      ], { duration:W, easing:writeEase, fill:'forwards' });
+
+      setTimeout(()=>{
+        // 3 · pen lifts away; the ink blooms into the gradient
+        pen.animate([
+          { opacity:1, transform:'translate(-15%,-87%) rotate(0deg)' },
+          { opacity:0, transform:'translate(30%,-150%) rotate(14deg)' },
+        ], { duration:420, easing:'ease-in', fill:'forwards' });
+        script.style.transition = 'opacity .9s var(--ease)';
+        grad.style.transition = 'opacity .9s var(--ease)';
+        script.style.opacity = 0;
+        grad.style.opacity = 1;
+      }, W + 60);
     }, E + 120);
   }, 1350);
 })();
