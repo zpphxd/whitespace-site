@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Features — Whitespace</title>
+<meta name="description" content="Every tool in Whitespace, pinned up on one static board — drawing, binding arrows, files, Obsidian, live code cells, boards in tabs, and export to agents.">
+<link rel="icon" type="image/png" href="assets/logo-64.png">
+<link rel="apple-touch-icon" href="assets/logo-192.png">
+
+<style>
+/* ============================================================
+   Whitespace — features page
+   One STATIC board: every feature pinned up as a hand-drawn
+   card, grouped inside labeled frames (the app's own concept).
+   Same visual system as the landing page.
+   ============================================================ */
+:root{
+  --ink:#1d1d1f; --ink-soft:#6e6e73; --ink-faint:#a1a1a6; --line:#d2d2d7;
+  --paper:#fff; --paper-2:#fbfbfd; --paper-3:#f5f5f7;
+  --accent:#6965db; --accent-2:#a78bfa; --accent-ink:#524dc7;
+  --sketch:#2b2b30;
+  --shadow-md:0 20px 44px -22px rgba(20,18,40,.24);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --hand:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font); color:var(--ink); line-height:1.5;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden;
+  background:
+    radial-gradient(rgba(29,29,31,.13) 1.1px, transparent 1.4px) 0 0/26px 26px,
+    linear-gradient(180deg,#fbfbfd 0%,#f5f3fc 100%);
+  background-attachment:fixed; }
+a{ color:inherit; text-decoration:none; }
+img,svg{ display:block; max-width:100%; }
+.wrap{ width:100%; max-width:1160px; margin:0 auto; padding:0 24px; }
+.hand{ font-family:var(--hand); }
+
+/* NAV */
+.nav{ position:fixed; top:0; left:0; right:0; z-index:100; height:52px; display:flex; align-items:center;
+  background:rgba(251,251,253,.78); backdrop-filter:saturate(180%) blur(20px); -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.08); }
+.nav .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1080px; }
+.brand{ display:flex; align-items:center; gap:9px; font-weight:600; font-size:19px; letter-spacing:-.02em; }
+.brand .mark{ width:26px; height:26px; }
+.nav-links{ display:flex; align-items:center; gap:30px; }
+.nav-links a{ font-size:14px; color:var(--ink-soft); font-weight:450; transition:color .2s; }
+.nav-links a:hover{ color:var(--ink); }
+.nav-links a.on{ color:var(--accent-ink); font-weight:600; }
+.nav-cta{ font-size:14px; font-weight:550; color:#fff; background:var(--ink); padding:7px 16px; border-radius:980px; transition:transform .2s var(--ease); }
+.nav-cta:hover{ transform:scale(1.04); }
+@media(max-width:760px){ .nav-links{ display:none; } }
+
+/* HEAD */
+.head{ padding:130px 0 26px; text-align:center; }
+.head h1{ font-size:clamp(36px,5.6vw,60px); font-weight:700; letter-spacing:-.04em; line-height:1.02; }
+.head .lead{ margin:18px auto 0; max-width:46ch; font-size:clamp(17px,2.2vw,20px); color:var(--ink-soft); letter-spacing:-.01em; }
+.head .scribble{ margin:0 auto 18px; width:96px; height:96px; filter:drop-shadow(0 16px 26px rgba(30,25,60,.25)); }
+
+/* the app's toolbar, laid on the board under the header */
+.ws-toolbar{ width:max-content; margin:26px auto 8px;
+  display:flex; align-items:center; gap:4px; padding:7px 12px; border-radius:16px;
+  background:rgba(255,255,255,.92); border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 12px 30px -12px rgba(30,25,60,.4),inset 0 1px 0 rgba(255,255,255,.9); }
+.ws-toolbar .tb{ width:30px; height:32px; border-radius:8px; flex:none; display:flex; align-items:center; justify-content:center;
+  color:#26242e; font-size:12.5px; font-weight:500; transition:background .18s,color .18s; }
+.ws-toolbar .tb svg{ width:17px; height:17px; }
+.ws-toolbar .tb:hover{ background:rgba(0,0,0,.06); }
+.ws-toolbar .tb.active{ background:var(--accent); color:#fff; }
+.ws-toolbar .div{ width:1px; height:22px; background:rgba(0,0,0,.14); margin:0 4px; flex:none; }
+@media(max-width:680px){ .ws-toolbar{ transform:scale(.78); transform-origin:top center; } }
+
+/* FRAMES — labeled containers, like the app's frame tool */
+.frame{ position:relative; margin:64px 0; padding:34px 26px 26px;
+  border:2px solid rgba(43,43,48,.4); border-radius:6px 4px 7px 3px / 3px 7px 4px 6px; }
+.frame > .flabel{ position:absolute; top:-16px; left:16px; padding:1px 12px;
+  font-family:var(--hand); font-size:21px; color:#57525f; background:#f8f7fd;
+  border-radius:6px; }
+.frame > .fnote{ position:absolute; top:-14px; right:16px; padding:1px 10px;
+  font-family:var(--hand); font-size:15px; color:var(--ink-faint); background:#f8f7fd; }
+.fgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:20px; }
+
+/* CARDS — the tour's hand-drawn boxes, minified */
+.f-card{ position:relative; background:#fff; border:2.5px solid var(--sketch);
+  border-radius:12px 7px 14px 6px / 6px 15px 5px 13px;
+  padding:18px 20px 17px; box-shadow:0 18px 36px -20px rgba(30,25,60,.35);
+  transform:rotate(var(--tilt,0deg)); }
+.f-card:nth-child(3n){ --tilt:.6deg; } .f-card:nth-child(3n+1){ --tilt:-.5deg; } .f-card:nth-child(4n){ --tilt:.9deg; }
+.f-card.paper-y{ background:#fff9db; } .f-card.paper-v{ background:#f3f0ff; }
+.f-card.paper-g{ background:#ebfbee; } .f-card.paper-b{ background:#e7f5ff; }
+.f-card .tape{ position:absolute; top:-11px; left:50%; width:84px; height:20px;
+  transform:translateX(-50%) rotate(-2.5deg); background:rgba(255,224,130,.72);
+  box-shadow:0 2px 6px -2px rgba(0,0,0,.15); border-radius:2px; }
+.f-card h3{ font-size:16.5px; font-weight:650; letter-spacing:-.02em; margin-bottom:6px; }
+.f-card p{ font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+.f-card p b{ color:var(--ink); }
+.f-card .keys{ margin-top:10px; display:flex; gap:5px; flex-wrap:wrap; }
+kbd{ font-family:var(--font); font-size:11.5px; font-weight:550; color:var(--ink); min-width:22px; height:24px; padding:0 6px;
+  border-radius:7px; display:inline-flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,#fff,#f1f1f4); border:1px solid var(--line); border-bottom-width:2px; }
+.f-card.paper-y kbd,.f-card.paper-v kbd,.f-card.paper-g kbd,.f-card.paper-b kbd{ background:rgba(255,255,255,.8); }
+
+/* hand doodles floating on the board */
+.doodle{ font-family:var(--hand); color:#8a8594; font-size:22px; text-align:center; margin:44px 0 -28px; }
+
+/* CTA + FOOTER */
+.cta{ text-align:center; padding:70px 0 90px; }
+.cta .big{ font-size:clamp(26px,3.6vw,40px); font-weight:700; letter-spacing:-.035em; }
+.cta .row{ margin-top:24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn{ display:inline-flex; align-items:center; gap:9px; font-size:16px; font-weight:550;
+  padding:12px 22px; border-radius:980px; border:1px solid transparent; white-space:nowrap;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease); }
+.btn svg{ width:17px; height:17px; }
+.btn-accent{ background:linear-gradient(120deg,var(--accent),var(--accent-ink)); color:#fff; box-shadow:0 14px 30px -12px rgba(105,101,219,.6); }
+.btn-accent:hover{ transform:translateY(-2px); }
+.btn-ghost{ background:rgba(255,255,255,.8); color:var(--ink); border-color:var(--line); }
+.btn-ghost:hover{ transform:translateY(-2px); }
+.cta .note{ margin-top:14px; font-size:12.5px; color:var(--ink-faint); }
+
+footer{ padding:44px 0; border-top:1px solid var(--line); background:var(--paper); }
+footer .wrap{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; max-width:1080px; }
+footer .brand{ font-size:16px; }
+footer .flinks{ display:flex; gap:26px; flex-wrap:wrap; }
+footer .flinks a{ font-size:14px; color:var(--ink-soft); transition:color .2s; }
+footer .flinks a:hover{ color:var(--ink); }
+footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8px; }
+
+/* gentle reveal */
+.reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s var(--ease),transform .7s var(--ease); }
+.reveal.in{ opacity:1; transform:none; }
+@media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/logo-64.png" alt="" width="26" height="26">
+      <span>Whitespace</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">The board</a>
+      <a class="on" href="features.html">Features</a>
+      <a href="https://github.com/zpphxd/whitespace" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <a class="nav-cta" href="https://github.com/zpphxd/whitespace/releases/latest/download/Whitespace.dmg">Download</a>
+  </div>
+</nav>
+
+<header class="head">
+  <img class="scribble" src="assets/logo-192.png" alt="" width="96" height="96">
+  <h1>The whole board.</h1>
+  <p class="lead">Every tool in Whitespace, pinned up in one place —
+     grouped in frames, the way you'd lay it out on the canvas.</p>
+</header>
+
+<!-- the app's toolbar rides along as you browse -->
+<div class="ws-toolbar" aria-hidden="true">
+  <span class="tb" title="Hand (H)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 11.5V6a1.2 1.2 0 0 1 2.4 0v4.5m0-5.6V4.2a1.2 1.2 0 0 1 2.4 0v6.3m0-5.3a1.2 1.2 0 0 1 2.4 0v6.3m0-4.3a1.2 1.2 0 0 1 2.4.4v6.4c0 3.7-2.5 6-5.9 6-2.7 0-4-1.2-5.3-3.5l-2-3.6c-.5-.9.7-1.8 1.5-1.1l2.1 1.7"/></svg></span>
+  <span class="tb active" title="Select (V)"><svg viewBox="0 0 24 24" fill="none"><path d="M5.5 3.5 19 13l-5.6.7-3.1 5z" fill="currentColor"/></svg></span>
+  <span class="tb" title="Rectangle (R)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/></svg></span>
+  <span class="tb" title="Ellipse (O)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.2"/></svg></span>
+  <span class="tb" title="Diamond (D)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.4 20.6 12 12 20.6 3.4 12Z"/></svg></span>
+  <span class="tb" title="Arrow (A)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg></span>
+  <span class="tb" title="Line (L)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5.5 18.5 18.5 5.5"/></svg></span>
+  <span class="tb" title="Draw (P)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 20 .9-3.9L15.6 5.4a1.9 1.9 0 0 1 2.7 0l.3.3a1.9 1.9 0 0 1 0 2.7L7.9 19.1zM13.9 7.1l3 3"/></svg></span>
+  <span class="tb" title="Text (T)">Aa</span>
+  <span class="tb" title="Eraser (E)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h14"/><path d="M6.2 15.3a1.8 1.8 0 0 1 0-2.6l6.5-6.5a1.8 1.8 0 0 1 2.6 0l3.5 3.5a1.8 1.8 0 0 1 0 2.6L13.6 17.5H9.4z"/><path d="m9.3 9.8 5.9 5.9"/></svg></span>
+  <span class="div"></span>
+  <span class="tb" title="Insert image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5" fill="currentColor" stroke="none"/><path d="m5.5 17 4.5-4.5 3 3 2.5-2.5 3 3" stroke-linecap="round"/></svg></span>
+  <span class="tb" title="Link a file, folder, or URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8.2 12.3 6.6-6.6a3.1 3.1 0 0 1 4.4 4.4l-8.2 8.2a4.9 4.9 0 0 1-6.9-6.9l7.8-7.8"/></svg></span>
+  <span class="tb" title="Insert a code cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="m7 9.5 3 2.5-3 2.5M12.5 15H17"/></svg></span>
+  <span class="tb" title="More tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.2"/><circle cx="7.8" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.2" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+  <span class="div"></span>
+  <span class="tb" title="Search, library, and vault sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M14.5 5v14"/><path d="M14.5 7h6v10h-6z" fill="currentColor" stroke="none" opacity=".35"/></svg></span>
+</div>
+
+<main class="wrap">
+
+  <!-- DRAW -->
+  <section class="frame reveal">
+    <span class="flabel">Draw ✎</span>
+    <span class="fnote">every stroke is native Core Graphics</span>
+    <div class="fgrid">
+      <div class="f-card"><span class="tape"></span>
+        <h3>The full toolset</h3>
+        <p>Select, rectangle, ellipse, diamond, arrow, line, freehand pen, text, eraser — plus lasso select, laser pointer, and frames in the more-tools menu.</p>
+        <div class="keys"><kbd>V</kbd><kbd>R</kbd><kbd>O</kbd><kbd>D</kbd><kbd>A</kbd><kbd>L</kbd><kbd>P</kbd><kbd>T</kbd><kbd>E</kbd></div>
+      </div>
+      <div class="f-card paper-y">
+        <h3>Really hand-drawn</h3>
+        <p>A faithful Swift port of the rough.js renderer — seeded jitter, sketchy ellipses, three sloppiness levels: <b>Architect · Artist · Cartoonist</b>.</p>
+      </div>
+      <div class="f-card">
+        <h3>Fills &amp; strokes</h3>
+        <p>Hachure, cross-hatch, and solid fills. Solid, dashed, and dotted strokes at any width — the classic Excalidraw swatch palette included.</p>
+      </div>
+      <div class="f-card paper-b">
+        <h3>Text that scales</h3>
+        <p>Resize a text box and the font scales to fit. Four families — hand-drawn, normal, code, fancy — and double-click anywhere to start typing.</p>
+      </div>
+      <div class="f-card">
+        <h3>Pressure pen</h3>
+        <p>The freehand tool renders perfect-freehand style strokes — width varies with speed, or switch to uniform in the inspector.</p>
+      </div>
+      <div class="f-card paper-g">
+        <h3>Liquid Glass UI</h3>
+        <p>Toolbar and inspector float in macOS 26's native <b>glassEffect</b> — tools top-center, style inspector docked left.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONNECT -->
+  <section class="frame reveal">
+    <span class="flabel">Connect ⟶</span>
+    <span class="fnote">diagrams that survive a rethink</span>
+    <div class="fgrid">
+      <div class="f-card paper-v">
+        <h3>Arrows that bind</h3>
+        <p>Drop an endpoint on any shape and the arrow <b>binds</b> — snapping to the edge and re-routing when either end moves or resizes.</p>
+      </div>
+      <div class="f-card"><span class="tape"></span>
+        <h3>Elbow arrows</h3>
+        <p>The "checker" arrow keeps clean right angles through every reroute. Five arrowhead styles per end: arrow, triangle, dot, bar, none.</p>
+      </div>
+      <div class="f-card">
+        <h3>Frames &amp; groups</h3>
+        <p>Labeled container frames carry their contents when moved. <b>⌘G</b> to group, plus align &amp; distribute across any multi-selection.</p>
+        <div class="keys"><kbd>⌘</kbd><kbd>G</kbd></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="doodle">bring your actual work onto the board ↓</p>
+
+  <!-- BRING YOUR STUFF -->
+  <section class="frame reveal">
+    <span class="flabel">Bring your stuff 📎</span>
+    <div class="fgrid">
+      <div class="f-card paper-b"><span class="tape"></span>
+        <h3>Files as live cards</h3>
+        <p>Press <b>/</b> to Spotlight-search your Mac and drop any file or folder in — real Quick Look thumbnails, modified dates, a <i>Missing</i> badge if it moves.</p>
+        <div class="keys"><kbd>/</kbd><kbd>Space</kbd></div>
+      </div>
+      <div class="f-card paper-v">
+        <h3>Obsidian inside</h3>
+        <p>Notes drop in as <b>obsidian://</b> cards that open straight into your vault. The sidebar shelf keeps vault search one keystroke away.</p>
+      </div>
+      <div class="f-card">
+        <h3>Web links &amp; images</h3>
+        <p>Paste a URL for a linked card, drag images straight onto the canvas, and Quick Look anything with <b>Space</b>.</p>
+      </div>
+      <div class="f-card">
+        <h3>Finder native</h3>
+        <p>Right-click any file card to Open or Reveal in Finder. Drag from Finder in; everything stays a real reference, never a copy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUN IT -->
+  <section class="frame reveal">
+    <span class="flabel">Run it ▶</span>
+    <span class="fnote">the canvas can execute</span>
+    <div class="fgrid">
+      <div class="f-card paper-g"><span class="tape"></span>
+        <h3>Live code cells</h3>
+        <p>Drop runnable cells in <b>shell, Python, JavaScript, or Ruby</b> right on the board — output renders inline underneath.</p>
+        <div class="keys"><kbd>⌘</kbd><kbd>↵</kbd></div>
+      </div>
+      <div class="f-card">
+        <h3>Arrows become pipes</h3>
+        <p>Connect two cells and the arrow turns into a <b>data pipe</b> — run the graph and stdout flows into the next cell's stdin.</p>
+        <div class="keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>↵</kbd></div>
+      </div>
+      <div class="f-card paper-y">
+        <h3>Charts &amp; QR codes</h3>
+        <p>Native chart nodes render live from piped data, and QR nodes turn any link into scannable ink — all in the same hand-drawn style.</p>
+      </div>
+      <div class="f-card">
+        <h3>Notebook interop</h3>
+        <p>Import and export <b>.ipynb</b> — your board's cells round-trip with Jupyter notebooks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORGANIZE -->
+  <section class="frame reveal">
+    <span class="flabel">Organize ⌘</span>
+    <div class="fgrid">
+      <div class="f-card paper-b">
+        <h3>Boards in tabs</h3>
+        <p>As many boards as you're thinking about — named, reorderable tabs, each with its own autosave and per-board export.</p>
+      </div>
+      <div class="f-card"><span class="tape"></span>
+        <h3>Three backdrops</h3>
+        <p><b>Solid white</b> for focus, a <b>light wash</b> that lets the wallpaper breathe, or <b>fully transparent</b> — straight onto the desktop.</p>
+      </div>
+      <div class="f-card">
+        <h3>Idle / edit dance</h3>
+        <p>Idle, clicks pass through to Finder and your drawings rest on the wallpaper. <b>⌥⌘W</b> flips the desktop into a live board.</p>
+        <div class="keys"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>W</kbd></div>
+      </div>
+      <div class="f-card paper-g">
+        <h3>Menu-bar light</h3>
+        <p>No Dock icon, no window. A scribble in the status bar, configurable global hotkeys, autosave to Application Support.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHIP IT -->
+  <section class="frame reveal">
+    <span class="flabel">Ship it 🚀</span>
+    <span class="fnote">sketch → hand-off</span>
+    <div class="fgrid">
+      <div class="f-card">
+        <h3>PNG &amp; SVG</h3>
+        <p>Crisp raster or true-vector export, pixel-matched to the canvas — per board, from the tab's right-click menu.</p>
+      </div>
+      <div class="f-card paper-v"><span class="tape"></span>
+        <h3>HTML → your agents</h3>
+        <p><b>Export as HTML</b> hands the whole board to Claude or any coding agent — every shape, label, and connection in a format it can read.</p>
+      </div>
+      <div class="f-card">
+        <h3>Excalidraw round-trip</h3>
+        <p>Boards read and write the <b>.excalidraw</b> JSON format, so everything interoperates with Excalidraw itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta reveal">
+    <div class="big">All of it, one keystroke away.</div>
+    <div class="row">
+      <a class="btn btn-accent" href="https://github.com/zpphxd/whitespace/releases/latest/download/Whitespace.dmg">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 11 4 7l1.1-1.1L7.2 8V1h1.6v7l2.1-2.1L12 7z"/><path d="M3 13h10v1.5H3z"/></svg>
+        Download for macOS
+      </a>
+      <a class="btn btn-ghost" href="index.html#features">Watch the board build itself →</a>
+    </div>
+    <p class="note">Free &amp; open source · 100% Swift · Requires macOS 26</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/logo-64.png" alt="" width="22" height="22" style="width:22px;height:22px">
+      Whitespace
+    </a>
+    <div class="flinks">
+      <a href="index.html#features">The board</a>
+      <a href="features.html">Features</a>
+      <a href="https://github.com/zpphxd/whitespace" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/zpphxd/whitespace/releases/latest/download/Whitespace.dmg">Download</a>
+    </div>
+    <p class="copy">Whitespace — a native macOS whiteboard, written in Swift. Not affiliated with Excalidraw; interoperable with the <code>.excalidraw</code> format.</p>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((es)=>{
+  for(const e of es){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }
+}, {rootMargin:'0px 0px -6% 0px', threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
