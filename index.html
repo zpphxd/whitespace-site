@@ -60,16 +60,24 @@ h1,h2,h3{ letter-spacing:-.03em; font-weight:650; line-height:1.05; }
 .swap{ position:relative; display:inline-grid; justify-items:center; }
 .swap > span{ grid-area:1/1; white-space:nowrap; }
 .sw-plain{ color:var(--ink-faint); }
-/* tegaki engine container: the script writes itself here, live, in gradient */
-.sw-anim{ display:inline-block; width:3.1em; font-size:1.55em; line-height:1.22;
-  margin:-.12em 0 -.08em; opacity:0; transition:opacity .25s; }
+.sw-script{ font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;
+  font-weight:600; font-size:1.06em; line-height:1.05; padding:0 .14em .12em .1em;
+  color:var(--accent);                       /* wet ink while the pen writes */
+  clip-path:inset(-30% 100% -35% 0); }
+.sw-grad{                                    /* the finished gradient, faded in after */
+  background:linear-gradient(120deg,var(--accent) 0%,var(--accent-2) 55%,#f0a5c8 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  clip-path:none; opacity:0; }
 .sw-eraser{ position:absolute; left:0; top:50%; width:.9em;
   transform:translate(-130%,-58%) rotate(-9deg); opacity:0; pointer-events:none;
   filter:drop-shadow(0 10px 16px rgba(30,25,60,.3)); }
+.sw-pen{ position:absolute; left:0; top:50%; width:.62em; opacity:0; pointer-events:none;
+  transform:translate(-15%,-88%); filter:drop-shadow(0 8px 12px rgba(30,25,60,.28)); }
 @media(prefers-reduced-motion:reduce){
   .sw-plain{ visibility:hidden; }
-  .sw-anim{ opacity:1; }
-  .sw-eraser{ display:none; }
+  .sw-script{ visibility:hidden; }
+  .sw-script.sw-grad{ visibility:visible; opacity:1; }
+  .sw-eraser,.sw-pen{ display:none; }
 }
 
 .btn{ display:inline-flex; align-items:center; gap:9px; font-size:17px; font-weight:550; letter-spacing:-.01em;
@@ -377,12 +385,20 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <h1 class="display reveal d1" aria-label="Your desktop is the canvas.">Your desktop is<br>
       <span class="swap" aria-hidden="true">
         <span class="sw-plain" id="swPlain">just a desktop.</span>
-        <span class="sw-anim" id="swWrite"></span>
+        <span class="sw-script" id="swScript">the canvas.</span>
+        <span class="sw-script sw-grad" id="swGrad">the canvas.</span>
         <span class="sw-eraser" id="swEraser">
           <svg viewBox="0 0 132 74" fill="none">
             <rect x="5" y="6" width="122" height="42" rx="10" fill="#f7f4ec" stroke="#2b2b30" stroke-width="4"/>
             <rect x="5" y="38" width="122" height="30" rx="9" fill="#e8b4c8" stroke="#2b2b30" stroke-width="4"/>
             <path d="M28 24h56" stroke="#cdc6b6" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="sw-pen" id="swPen">
+          <svg viewBox="0 0 64 68" fill="none" stroke="#2b2b30" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 62 L14 44 L28 56 Z" fill="#6965db"/>
+            <path d="M14 44 L40 11 a8 8 0 0 1 12 10 L28 56 Z" fill="#f7f4ec"/>
+            <path d="M19 40 L32 51" stroke="#cdc6b6"/>
           </svg>
         </span>
       </span>
@@ -714,32 +730,67 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 /* ---------- hero headline: erase "just a desktop", write "the canvas" ---------- */
 (function(){
   const plain = document.getElementById('swPlain');
+  const script = document.getElementById('swScript');
+  const grad = document.getElementById('swGrad');
   const eraser = document.getElementById('swEraser');
+  const pen = document.getElementById('swPen');
+  const swap = document.querySelector('.swap');
   if(!plain || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const E = 950;               // erase duration
+  const E = 620, W = 1050;     // erase + write — quick, like the boot-screen hello
+  const glide = 'cubic-bezier(.45,.05,.55,.95)';
   setTimeout(()=>{
-    // 1 · erase "just a desktop."
+    // 1 · erase the actual words: sweep measured against the text box itself
+    const sr = swap.getBoundingClientRect();
+    const pr = plain.getBoundingClientRect();
+    const ew = eraser.offsetWidth || 60;
+    const xStart = (pr.left - sr.left) - ew * .55;
+    const xEnd   = (pr.right - sr.left) - ew * .25;
     eraser.style.opacity = 1;
     eraser.animate([
-      { left:'-6%',  transform:'translate(-60%,-58%) rotate(-9deg)' },
-      { left:'55%',  transform:'translate(-50%,-70%) rotate(7deg)' },
-      { left:'104%', transform:'translate(-40%,-52%) rotate(-6deg)' },
-    ], { duration:E, easing:'ease-in-out', fill:'forwards' });
+      { transform:`translate3d(${xStart}px,-58%,0) rotate(-7deg)` },
+      { transform:`translate3d(${(xStart+xEnd)/2}px,-66%,0) rotate(5deg)` },
+      { transform:`translate3d(${xEnd}px,-56%,0) rotate(-4deg)` },
+    ], { duration:E, easing:glide, fill:'forwards' });
     plain.animate([
       { clipPath:'inset(-15% 0% -15% 0%)' },
       { clipPath:'inset(-15% 0% -15% 100%)' },
-    ], { duration:E, easing:'ease-in-out', fill:'forwards' });
+    ], { duration:E, easing:glide, fill:'forwards' });
 
     setTimeout(()=>{
-      // 2 · cue the tegaki engine (module below) to write "the canvas."
-      eraser.style.transition = 'opacity .3s'; eraser.style.opacity = 0;
-      if(window.__swStart) window.__swStart(); else window.__swPending = true;
-    }, E + 150);
-  }, 1900);                    // let "just a desktop." register first
+      // 2 · the pen writes "the canvas." exactly where the words were,
+      //     its nib tracking the reveal edge of the script's own text box
+      eraser.style.transition = 'opacity .25s'; eraser.style.opacity = 0;
+      const cr = script.getBoundingClientRect();
+      const x0 = cr.left - sr.left, x1 = cr.right - sr.left;
+      pen.style.opacity = 1;
+      pen.animate([
+        { transform:`translate3d(${x0}px,-86%,0) rotate(0deg)` },
+        { transform:`translate3d(${x0+(x1-x0)*.25}px,-80%,0) rotate(4deg)` },
+        { transform:`translate3d(${x0+(x1-x0)*.5}px,-90%,0) rotate(-3deg)` },
+        { transform:`translate3d(${x0+(x1-x0)*.75}px,-81%,0) rotate(4deg)` },
+        { transform:`translate3d(${x1}px,-87%,0) rotate(0deg)` },
+      ], { duration:W, easing:glide, fill:'forwards' });
+      script.animate([
+        { clipPath:'inset(-30% 100% -35% 0)' },
+        { clipPath:'inset(-30% -8% -35% 0)' },
+      ], { duration:W, easing:glide, fill:'forwards' });
+
+      setTimeout(()=>{
+        // 3 · pen lifts away; the ink blooms into the gradient
+        pen.animate([
+          { opacity:1, transform:`translate3d(${x1}px,-87%,0) rotate(0deg)` },
+          { opacity:0, transform:`translate3d(${x1+30}px,-150%,0) rotate(14deg)` },
+        ], { duration:380, easing:'ease-in', fill:'forwards' });
+        script.style.transition = 'opacity .7s var(--ease)';
+        grad.style.transition = 'opacity .7s var(--ease)';
+        script.style.opacity = 0;
+        grad.style.opacity = 1;
+      }, W + 60);
+    }, E + 60);
+  }, 800);
 })();
 
 /* ---------- the board: scroll-built flow map ---------- */
-// (tegaki module for the headline lives at the end of <body>)
 (function(){
   const track = document.getElementById('jtrack');
   if(!track) return;
@@ -966,31 +1017,6 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
 </script>
 
-<!-- tegaki (github.com/gkurt/tegaki): the headline writes itself -->
-<script type="module">
-import { TegakiEngine } from './assets/vendor/tegaki/core/index.mjs';
-import italianno from './assets/vendor/tegaki/fonts/italianno/bundle.mjs';
-const box = document.getElementById('swWrite');
-if (box) {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const eng = new TegakiEngine(box, {
-    text: 'the canvas.',
-    font: italianno,
-    timing: { stagger: { advance: '75%' } },
-    quality: { smoothing: true },
-    effects: {
-      pressureWidth: { strength: .85 },
-      globalGradient: { colors: ['#6965db', '#a78bfa', '#f0a5c8'], angle: 12 },
-    },
-  });
-  eng.pause(); eng.seek(0);
-  if (reduce) {
-    eng.seek('100%'); box.style.opacity = 1;
-  } else {
-    window.__swStart = () => { box.style.opacity = 1; eng.restart(); };
-    if (window.__swPending) window.__swStart();
-  }
-}
-</script>
+
 </body>
 </html>
