@@ -214,7 +214,7 @@ h1,h2,h3{ letter-spacing:-.03em; font-weight:650; line-height:1.05; }
 /* ============================================================
    JOURNEY — the whole site after the hero is one whiteboard
    ============================================================ */
-.j-track{ position:relative; height:1080vh; }
+.j-track{ position:relative; height:1200vh; }
 .j-viewport{ position:sticky; top:0; height:100vh; height:100svh; overflow:hidden;
   background:
     radial-gradient(rgba(29,29,31,.14) 1.1px, transparent 1.4px) 0 0/26px 26px,
@@ -295,6 +295,38 @@ svg.j-media{ max-height:none; height:auto; }
 @keyframes tsC{ 0%,30%{ opacity:1; } 33.3%,100%{ opacity:0; } }
 .tabsim .reorder{ margin-top:9px; font-family:var(--hand); font-size:13.5px; color:var(--ink-faint); }
 @media(prefers-reduced-motion:reduce){ .tst,.tsc{ animation:none; } .tsc.c1{ opacity:1; } .tst.t1{ background:#6965db; color:#fff; } }
+
+/* ask-it node: the rainbow prompt capsule types, then the agent draws (9s loop) */
+.ask-demo{ margin-top:16px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.ai-cap{ padding:2.5px; border-radius:17px; width:max-content;
+  background:linear-gradient(90deg,#ff5f57,#febc2e,#28c840,#59b7ff,#a78bfa,#ff5f57);
+  background-size:300% 100%; animation:aiMarch 2.2s linear infinite;
+  box-shadow:0 10px 26px -12px rgba(30,25,60,.4); }
+@keyframes aiMarch{ to{ background-position:300% 0; } }
+.ai-cap-in{ display:flex; align-items:center; gap:9px; background:rgba(255,255,255,.97);
+  border-radius:14.5px; padding:10px 17px; font-size:14px; font-weight:550; color:#26242e; }
+.ai-cap-in .spark{ color:#6965db; font-size:15px; }
+.tq-type{ overflow:hidden; white-space:nowrap; width:0; animation:tqType 9s steps(17,end) infinite; }
+@keyframes tqType{ 0%,3%{width:0} 20%,92%{width:17ch} 97%,100%{width:0} }
+.ask-svg{ width:100%; height:auto; }
+@keyframes tqN1{ 0%,26%{opacity:0; transform:scale(.5)} 30%,92%{opacity:1; transform:scale(1)} 96%,100%{opacity:0; transform:scale(.5)} }
+@keyframes tqN2{ 0%,34%{opacity:0; transform:scale(.5)} 38%,92%{opacity:1; transform:scale(1)} 96%,100%{opacity:0; transform:scale(.5)} }
+@keyframes tqN3{ 0%,42%{opacity:0; transform:scale(.5)} 46%,92%{opacity:1; transform:scale(1)} 96%,100%{opacity:0; transform:scale(.5)} }
+.tq-n1{ animation:tqN1 9s infinite; } .tq-n2{ animation:tqN2 9s infinite; }
+.tq-n3{ animation:tqN3 9s infinite; transform-origin:245px 50px; }
+@keyframes tqA1{ 0%,50%{stroke-dashoffset:1} 56%,92%{stroke-dashoffset:0} 96%,100%{stroke-dashoffset:1} }
+@keyframes tqA2{ 0%,58%{stroke-dashoffset:1} 64%,92%{stroke-dashoffset:0} 96%,100%{stroke-dashoffset:1} }
+.tq-a1{ stroke-dasharray:1; animation:tqA1 9s infinite; }
+.tq-a2{ stroke-dasharray:1; animation:tqA2 9s infinite; }
+@keyframes tqH1{ 0%,55%{opacity:0} 57%,92%{opacity:1} 96%,100%{opacity:0} }
+@keyframes tqH2{ 0%,63%{opacity:0} 65%,92%{opacity:1} 96%,100%{opacity:0} }
+.tq-h1{ animation:tqH1 9s infinite; } .tq-h2{ animation:tqH2 9s infinite; }
+@media(prefers-reduced-motion:reduce){
+  .ai-cap,.tq-type,.tq-n1,.tq-n2,.tq-n3,.tq-a1,.tq-a2,.tq-h1,.tq-h2{ animation:none !important; }
+  .tq-type{ width:17ch; }
+  .tq-n1,.tq-n2,.tq-n3,.tq-h1,.tq-h2{ opacity:1; transform:none; }
+  .tq-a1,.tq-a2{ stroke-dashoffset:0; }
+}
 
 /* hand annotations + pinned photo on the board */
 .j-doodle{ position:absolute; font-family:var(--hand); font-size:26px; color:#7a7686; white-space:nowrap; }
@@ -575,9 +607,11 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
             <path class="wire" d="M 2830 1310 C 2790 1372, 2748 1436, 2694 1462 C 2662 1477, 2626 1476, 2600 1470 C 2522 1452, 2544 1372, 2618 1382 C 2680 1391, 2644 1468, 2546 1484 C 2486 1493, 2424 1472, 2380 1455"/>
             <!-- 04→05 dashed loopy swirl -->
             <path class="wire dashed" data-mask="#jm3" mask="url(#jm3)" d="M 1930 1760 C 1800 1840, 1740 1830, 1700 1770 C 1668 1722, 1730 1690, 1760 1730 C 1788 1768, 1720 1810, 1640 1820 C 1555 1830, 1520 1870, 1500 1905"/>
-            <!-- 05→06 lazy S with curl -->
-            <path class="wire" d="M 940 2110 C 866 2138, 788 2152, 730 2124 C 694 2106, 674 2076, 680 2040 C 666 1962, 758 1938, 780 2000 C 796 2052, 702 2072, 644 2012 C 592 1956, 634 1876, 700 1808 C 742 1764, 788 1722, 830 1690"/>
-            <!-- 06→07 dotted rise -->
+            <!-- 05→06 short hop with a curl: architect → ask it -->
+            <path class="wire" d="M 1565 2120 C 1608 2088, 1636 2072, 1660 2098 C 1678 2118, 1652 2142, 1634 2124 C 1618 2108, 1646 2082, 1684 2094 C 1712 2103, 1726 2118, 1738 2132"/>
+            <!-- 06→07 long lazy S with curl: ask it → tabs -->
+            <path class="wire" d="M 1738 2340 C 1500 2430, 1180 2420, 990 2300 C 860 2216, 760 2160, 690 2060 C 660 1975, 756 1940, 778 2000 C 794 2050, 704 2070, 648 2012 C 596 1956, 636 1876, 700 1808 C 742 1764, 788 1722, 830 1690"/>
+            <!-- 07→08 dotted rise -->
             <path class="wire dotted" data-mask="#jm5" mask="url(#jm5)" d="M 840 1490 C 980 1452, 1062 1420, 1122 1358 C 1198 1280, 1242 1180, 1322 1128 C 1362 1102, 1402 1090, 1440 1085"/>
           </g>
         </svg>
@@ -587,7 +621,8 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         <div class="j-doodle j-big" data-at="0.45" style="left:280px;top:880px;transform:rotate(-1.5deg)">a whiteboard shouldn't need a window.</div>
         <div class="j-doodle" data-at="1.5" style="left:2255px;top:555px;transform:rotate(2deg)">elbow arrows snap →</div>
         <div class="j-doodle" data-at="3.35" style="left:2440px;top:1560px;transform:rotate(-2deg)">your second brain ◆</div>
-        <div class="j-doodle" data-at="4.35" style="left:1620px;top:2280px;transform:rotate(-3deg)">…and it runs ▶</div>
+        <div class="j-doodle" data-at="4.2" style="left:1180px;top:2470px;transform:rotate(-3deg)">…and it runs ▶</div>
+        <div class="j-doodle" data-at="4.6" style="left:1840px;top:1968px;transform:rotate(-2deg)">or just ask ✨</div>
 
         <!-- a real exported board, pinned like a photo -->
         <div class="j-photo" data-at="5.05" style="left:2720px;top:1780px;transform:rotate(2deg)">
@@ -747,8 +782,45 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
           </svg>
         </article>
 
+        <article class="j-node" style="left:1750px;top:2020px;--tilt:.6deg">
+          <span class="tape"></span>
+          <div class="j-top"><span class="j-num">06</span><span class="j-eyebrow">Ask it — BYOK</span></div>
+          <h3>Or don't draw it at all.</h3>
+          <p>Press <b>⌘I</b> and describe it. The agent opens with a two-line design spec,
+             then draws live on your board — shapes, bound arrows, infra stencils, even
+             <b>cells it runs</b>. Claude, GPT, or local Ollama; your key stays in the
+             <b>Keychain</b>, and it can ground diagrams in your vault.</p>
+          <div class="ask-demo" aria-hidden="true">
+            <div class="ai-cap">
+              <div class="ai-cap-in">
+                <span class="spark">✦</span>
+                <span class="tq-type">draw my auth flow</span>
+              </div>
+            </div>
+            <svg viewBox="0 0 300 130" class="ask-svg">
+              <g class="tq-n1" style="transform-origin:50px 50px">
+                <ellipse cx="50" cy="50" rx="34" ry="22" fill="#d7e9ff" stroke="#2b2b30" stroke-width="2"/>
+                <text x="50" y="54" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">user</text>
+              </g>
+              <g class="tq-n2" style="transform-origin:150px 50px">
+                <rect x="116" y="30" width="68" height="40" rx="8" fill="#fff3c4" stroke="#2b2b30" stroke-width="2"/>
+                <text x="150" y="54" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">auth</text>
+              </g>
+              <g class="tq-n3" style="transform-origin:245px 50px">
+                <path d="M245 22 L282 50 L245 78 L208 50 Z" fill="#d3f2dc" stroke="#2b2b30" stroke-width="2"/>
+                <text x="245" y="54" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">ok?</text>
+              </g>
+              <path class="tq-a1" d="M86 50 H112" pathLength="1" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <path class="tq-h1" d="M105 43 L115 50 L105 57" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="tq-a2" d="M186 50 H202" pathLength="1" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <path class="tq-h2" d="M197 43 L207 50 L197 57" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text class="tq-n3" x="245" y="104" font-size="9.5" fill="#8a8594" text-anchor="middle" font-family="var(--hand)">it plans, then draws</text>
+            </svg>
+          </div>
+        </article>
+
         <article class="j-node paper-b rad-c" style="left:220px;top:1350px;--tilt:-.9deg">
-          <div class="j-top"><span class="j-num">06</span><span class="j-eyebrow">Boards in tabs</span></div>
+          <div class="j-top"><span class="j-num">07</span><span class="j-eyebrow">Boards in tabs</span></div>
           <h3>A board for every thread.</h3>
           <p>Spin up as many boards as you're thinking about — named, reorderable tabs,
              each with its own autosave and export. Switch instantly; nothing gets lost.</p>
@@ -783,7 +855,7 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         </article>
 
         <article class="j-node paper-g rad-b" style="left:1450px;top:850px;--tilt:-1.1deg">
-          <div class="j-top"><span class="j-num">07</span><span class="j-eyebrow">Idea → Build → Ship</span></div>
+          <div class="j-top"><span class="j-num">08</span><span class="j-eyebrow">Idea → Build → Ship</span></div>
           <h3>Ship it — even to your agents.</h3>
           <p>Boards autosave as <b>.excalidraw</b> and export to crisp PNG or true-vector SVG.
              And when it's time to build, <b>Export as HTML</b> hands the whole board to Claude
@@ -824,8 +896,9 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         <button class="j-dot" title="Link your files" aria-label="Stop 3"></button>
         <button class="j-dot" title="Obsidian inside" aria-label="Stop 4"></button>
         <button class="j-dot" title="Architect at desktop speed" aria-label="Stop 5"></button>
-        <button class="j-dot" title="Boards in tabs" aria-label="Stop 6"></button>
-        <button class="j-dot" title="Ship it anywhere" aria-label="Stop 7"></button>
+        <button class="j-dot" title="Ask it — the drawing agent" aria-label="Stop 6"></button>
+        <button class="j-dot" title="Boards in tabs" aria-label="Stop 7"></button>
+        <button class="j-dot" title="Ship it anywhere" aria-label="Stop 8"></button>
         <button class="j-dot" title="The whole board" aria-label="Overview"></button>
       </div>
       <div class="j-eraser" id="jeraser" aria-hidden="true">
@@ -967,6 +1040,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     {x: 2860, y: 1080, z: 1.00},
     {x: 2250, y: 1680, z: 1.03},
     {x: 1250, y: 2170, z: 1.00},
+    {x: 2050, y: 2250, z: 1.02},
     {x: 520,  y: 1650, z: 1.02},
     {x: 1750, y: 1080, z: 1.01},
     {x: 1760, y: 1300, z: null},
