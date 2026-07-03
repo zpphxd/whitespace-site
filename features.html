@@ -165,6 +165,37 @@ kbd{ font-family:var(--font); font-size:11.5px; font-weight:550; color:var(--ink
 .w-ca{ opacity:0; animation:wCA 8.4s infinite; }
 .w-cb{ opacity:0; animation:wCB 8.4s infinite; }
 
+/* pressure pen: a variable-width swoosh inks on, then the uniform stroke */
+@keyframes ppVar{ 0%{clip-path:inset(-12% 100% -12% 0)} 38%,88%{clip-path:inset(-12% -4% -12% 0)} 100%{clip-path:inset(-12% 100% -12% 0)} }
+.pp-var{ clip-path:inset(-12% 100% -12% 0); animation:ppVar 4.2s ease-in-out infinite; }
+@keyframes ppUni{ 0%,10%{stroke-dashoffset:1} 46%,88%{stroke-dashoffset:0} 100%{stroke-dashoffset:1} }
+.pp-uni{ stroke-dasharray:1; stroke-dashoffset:1; animation:ppUni 4.2s ease-in-out infinite; }
+
+/* liquid glass: color blobs drift behind a REAL backdrop-filter pill */
+.lg-demo{ position:relative; width:200px; height:104px; overflow:hidden; background:#fff;
+  border:2px solid var(--sketch); border-radius:8px 5px 9px 4px / 4px 9px 5px 8px; }
+.lg-blob{ position:absolute; border-radius:50%; filter:blur(13px); }
+.lg-blob.b1{ width:86px; height:86px; left:-12px; top:-16px; background:#8ec8ff; animation:lgA 5.5s ease-in-out infinite alternate; }
+.lg-blob.b2{ width:96px; height:96px; right:-18px; bottom:-24px; background:#ffb3d1; animation:lgB 6.5s ease-in-out infinite alternate; }
+.lg-blob.b3{ width:70px; height:70px; left:70px; top:30px; background:#ffe08a; animation:lgA 7s ease-in-out infinite alternate-reverse; }
+@keyframes lgA{ from{transform:translate(-10px,-6px)} to{transform:translate(24px,14px)} }
+@keyframes lgB{ from{transform:translate(12px,8px)} to{transform:translate(-22px,-12px)} }
+.lg-pill{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  display:flex; gap:7px; align-items:center; padding:8px 13px; border-radius:12px;
+  background:rgba(255,255,255,.38); backdrop-filter:blur(9px) saturate(170%); -webkit-backdrop-filter:blur(9px) saturate(170%);
+  border:1px solid rgba(255,255,255,.7); box-shadow:0 8px 20px -10px rgba(30,25,60,.35); }
+.lg-pill svg{ width:13px; height:13px; color:#26242e; }
+.lg-pill .on{ background:#6965db; border-radius:5px; padding:2px; }
+.lg-pill .on svg{ color:#fff; }
+
+/* idle / edit dance: ⌥⌘W flips the desktop into a board and back */
+@keyframes ieIcons{ 0%,46%{opacity:1} 54%,96%{opacity:.22} 100%{opacity:1} }
+@keyframes ieSketch{ 0%,46%{opacity:.28} 54%,96%{opacity:1} 100%{opacity:.28} }
+@keyframes ieBar{ 0%,46%{opacity:0} 54%,96%{opacity:1} 100%{opacity:0} }
+@keyframes ieKey{ 0%,4%{opacity:1} 10%,42%{opacity:.3} 46%,54%{opacity:1} 60%,92%{opacity:.3} 96%,100%{opacity:1} }
+.ie-icons{ animation:ieIcons 5.2s infinite; } .ie-sketch{ animation:ieSketch 5.2s infinite; }
+.ie-bar{ animation:ieBar 5.2s infinite; } .ie-key{ animation:ieKey 5.2s infinite; }
+
 /* finder demo: cursor travels in, menu pops, row highlights, Finder bounces */
 @keyframes fCur{ 0%{transform:translate(52px,34px); opacity:0} 7%{opacity:1} 20%,100%{transform:translate(0,0); opacity:1} }
 @keyframes fMenu{ 0%,22%{transform:scale(0); opacity:0} 30%,100%{transform:scale(1); opacity:1} }
@@ -350,14 +381,43 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         </div>
       </div>
 
-      <div class="f-card">
-        <h3>Pressure pen</h3>
-        <p>The freehand tool renders perfect-freehand style strokes — width varies with speed, or switch to uniform in the inspector.</p>
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Pressure pen</h3>
+            <p>The freehand tool renders perfect-freehand style strokes — width varies with speed, or switch to uniform in the inspector.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <text x="18" y="18" font-size="9.5" fill="#8a8594">variable</text>
+              <path class="pp-var" d="M16 52 C 40 22, 74 18, 102 34 C 122 46, 140 56, 164 52 C 180 49, 192 40, 202 32 L 206 40 C 194 54, 176 66, 152 66 C 126 66, 106 56, 92 46 C 72 32, 46 38, 26 60 Z" fill="#6965db"/>
+              <text x="18" y="82" font-size="9.5" fill="#8a8594">uniform</text>
+              <path class="pp-uni" d="M18 94 C 60 74, 120 108, 202 80" stroke="#2b2b30" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+            </svg>
+            <span class="bk-cap">width follows your speed</span>
+          </div>
+        </div>
       </div>
 
-      <div class="f-card paper-g">
-        <h3>Liquid Glass UI</h3>
-        <p>Toolbar and inspector float in macOS 26's native <b>glassEffect</b> — tools top-center, style inspector docked left.</p>
+      <div class="f-card flip paper-g">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Liquid Glass UI</h3>
+            <p>Toolbar and inspector float in macOS 26's native <b>glassEffect</b> — tools top-center, style inspector docked left.</p>
+          </div>
+          <div class="f-face f-back">
+            <div class="lg-demo">
+              <div class="lg-blob b1"></div><div class="lg-blob b2"></div><div class="lg-blob b3"></div>
+              <div class="lg-pill">
+                <span class="on"><svg viewBox="0 0 24 24" fill="none"><path d="M5.5 3.5 19 13l-5.6.7-3.1 5z" fill="currentColor"/></svg></span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg>
+              </div>
+            </div>
+            <span class="bk-cap">that blur is real — so is the app's</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -724,15 +784,74 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         </div>
       </div>
 
-      <div class="f-card">
-        <h3>Idle / edit dance</h3>
-        <p>Idle, clicks pass through to Finder and your drawings rest on the wallpaper. <b>⌥⌘W</b> flips the desktop into a live board.</p>
-        <div class="keys"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>W</kbd></div>
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Idle / edit dance</h3>
+            <p>Idle, clicks pass through to Finder and your drawings rest on the wallpaper. <b>⌥⌘W</b> flips the desktop into a live board.</p>
+            <div class="keys"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>W</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <rect x="12" y="8" width="196" height="78" rx="8" fill="#fff" stroke="#2b2b30" stroke-width="2"/>
+              <g class="ie-icons">
+                <text x="184" y="28" font-size="13" text-anchor="middle">📁</text>
+                <text x="184" y="50" font-size="13" text-anchor="middle">📄</text>
+              </g>
+              <g class="ie-sketch">
+                <rect x="30" y="34" width="42" height="26" rx="5" fill="#d7e9ff" stroke="#2b2b30" stroke-width="1.8"/>
+                <path d="M74 47 h26 m-6 -5 6 5 -6 5" stroke="#2b2b30" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="118" cy="47" r="14" fill="#ffe1ec" stroke="#2b2b30" stroke-width="1.8"/>
+                <path d="M34 72 c8 -10 14 4 24 -3" stroke="#6965db" stroke-width="2.2" stroke-linecap="round"/>
+              </g>
+              <g class="ie-bar">
+                <rect x="72" y="13" width="76" height="14" rx="7" fill="rgba(255,255,255,.95)" stroke="#2b2b30" stroke-width="1.3"/>
+                <rect x="77" y="16" width="8" height="8" rx="2.5" fill="#6965db"/>
+                <rect x="90" y="16" width="8" height="8" rx="2.5" fill="rgba(0,0,0,.12)"/>
+                <rect x="103" y="16" width="8" height="8" rx="2.5" fill="rgba(0,0,0,.12)"/>
+                <rect x="116" y="16" width="8" height="8" rx="2.5" fill="rgba(0,0,0,.12)"/>
+                <rect x="129" y="16" width="8" height="8" rx="2.5" fill="rgba(0,0,0,.12)"/>
+              </g>
+              <g class="ie-key">
+                <rect x="78" y="90" width="64" height="19" rx="6" fill="#fff" stroke="#2b2b30" stroke-width="1.6"/>
+                <text x="110" y="104" font-size="11" fill="#26242e" text-anchor="middle" font-weight="650">⌥ ⌘ W</text>
+              </g>
+            </svg>
+            <span class="bk-cap">wallpaper ↔ whiteboard, one key</span>
+          </div>
+        </div>
       </div>
 
-      <div class="f-card paper-g">
-        <h3>Menu-bar light</h3>
-        <p>No Dock icon, no window. A scribble in the status bar, configurable global hotkeys, autosave to Application Support.</p>
+      <div class="f-card flip paper-g">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>Menu-bar light</h3>
+            <p>No Dock icon, no window. A scribble in the status bar, configurable global hotkeys, autosave to Application Support.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <rect x="10" y="10" width="200" height="20" rx="5" fill="#fff" stroke="#2b2b30" stroke-width="2"/>
+              <text x="22" y="24" font-size="10" fill="#3c3c44"></text>
+              <text x="196" y="24" font-size="9" fill="#3c3c44" text-anchor="end">9:41</text>
+              <text x="176" y="24" font-size="9" fill="#3c3c44" text-anchor="end">🔋</text>
+              <g class="a-pulse" style="transform-origin:148px 20px">
+                <rect x="139" y="12" width="18" height="16" rx="4" fill="#f3f0ff"/>
+                <path d="M142 24 c2.5 -8 4 -8 5.5 0 s3 8 5.5 -1" stroke="#26242e" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+              </g>
+              <g class="f-menu" style="transform-origin:148px 32px">
+                <rect x="96" y="34" width="106" height="56" rx="9" fill="#fff" stroke="#2b2b30" stroke-width="2"/>
+                <rect x="101" y="40" width="96" height="19" rx="6" fill="#6965db" class="f-hi"/>
+                <text x="108" y="53" font-size="10" fill="#3c3c44">Start Drawing</text>
+                <text x="108" y="53" font-size="10" fill="#fff" class="f-hi">Start Drawing</text>
+                <text x="190" y="53" font-size="9" fill="#8a8594" text-anchor="end" class="f-hi" style="fill:#e6e2ff">⌥⌘W</text>
+                <text x="108" y="76" font-size="10" fill="#3c3c44">Boards ▸</text>
+              </g>
+              <text x="46" y="70" font-size="10" fill="#8a8594" font-family="var(--hand)">no Dock,</text>
+              <text x="46" y="84" font-size="10" fill="#8a8594" font-family="var(--hand)">no window</text>
+            </svg>
+            <span class="bk-cap">a scribble in the status bar</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -743,9 +862,31 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <span class="fnote">sketch → hand-off</span>
     <div class="fgrid">
 
-      <div class="f-card">
-        <h3>PNG &amp; SVG</h3>
-        <p>Crisp raster or true-vector export, pixel-matched to the canvas — per board, from the tab's right-click menu.</p>
+      <div class="f-card flip">
+        <div class="f-inner">
+          <div class="f-face">
+            <h3>PNG &amp; SVG</h3>
+            <p>Crisp raster or true-vector export, pixel-matched to the canvas — per board, from the tab's right-click menu.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <rect x="16" y="26" width="58" height="46" rx="9" fill="#fff" stroke="#2b2b30" stroke-width="2.2"/>
+              <path d="M28 58 c6 -14 10 6 14 -4 s7 -8 14 0" stroke="#6965db" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <rect x="30" y="34" width="16" height="10" rx="2.5" fill="#d7e9ff" stroke="#2b2b30" stroke-width="1.2"/>
+              <path d="M80 42 h34" stroke="#2b2b30" stroke-width="2" stroke-dasharray="5 6" class="a-march"/>
+              <path d="M80 60 h34" stroke="#2b2b30" stroke-width="2" stroke-dasharray="5 6" class="a-march" style="animation-delay:.4s"/>
+              <g class="a-pop">
+                <rect x="122" y="26" width="58" height="24" rx="8" fill="#d7e9ff" stroke="#2b2b30" stroke-width="2"/>
+                <text x="151" y="42" font-size="11.5" fill="#26242e" text-anchor="middle" font-weight="700">.png</text>
+              </g>
+              <g class="a-pop" style="animation-delay:.9s">
+                <rect x="122" y="56" width="58" height="24" rx="8" fill="#d3f2dc" stroke="#2b2b30" stroke-width="2"/>
+                <text x="151" y="72" font-size="11.5" fill="#26242e" text-anchor="middle" font-weight="700">.svg</text>
+              </g>
+              <text x="110" y="102" font-size="11" fill="#8a8594" text-anchor="middle">pixel-perfect · true vector</text>
+            </svg>
+          </div>
+        </div>
       </div>
 
       <div class="f-card flip paper-v">
