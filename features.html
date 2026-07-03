@@ -196,6 +196,32 @@ kbd{ font-family:var(--font); font-size:11.5px; font-weight:550; color:var(--ink
 .ie-icons{ animation:ieIcons 5.2s infinite; } .ie-sketch{ animation:ieSketch 5.2s infinite; }
 .ie-bar{ animation:ieBar 5.2s infinite; } .ie-key{ animation:ieKey 5.2s infinite; }
 
+/* ask-it demo: the prompt capsule types with a marching rainbow border,
+   then the agent assembles the diagram node by node */
+.f-card.wide{ grid-column:1 / -1; }
+.ai-back{ display:flex; gap:30px; align-items:center; justify-content:center; flex-wrap:wrap; width:100%; }
+.ai-cap{ padding:2.5px; border-radius:17px;
+  background:linear-gradient(90deg,#ff5f57,#febc2e,#28c840,#59b7ff,#a78bfa,#ff5f57);
+  background-size:300% 100%; animation:aiMarch 2.2s linear infinite;
+  box-shadow:0 10px 26px -12px rgba(30,25,60,.4); }
+@keyframes aiMarch{ to{ background-position:300% 0; } }
+.ai-cap-in{ display:flex; align-items:center; gap:9px; background:rgba(255,255,255,.97);
+  border-radius:14.5px; padding:11px 18px; font-size:13.5px; font-weight:550; color:#26242e; }
+.ai-cap-in .spark{ color:#6965db; font-size:15px; }
+.ai-type{ overflow:hidden; white-space:nowrap; width:0; animation:aiType 7s steps(17,end) infinite; }
+@keyframes aiType{ 0%,4%{width:0} 30%,100%{width:17ch} }
+@keyframes aiN1{ 0%,36%{opacity:0; transform:scale(.5)} 40%,95%{opacity:1; transform:scale(1)} 100%{opacity:0; transform:scale(.5)} }
+@keyframes aiN2{ 0%,44%{opacity:0; transform:scale(.5)} 48%,95%{opacity:1; transform:scale(1)} 100%{opacity:0; transform:scale(.5)} }
+@keyframes aiN3{ 0%,52%{opacity:0; transform:scale(.5)} 56%,95%{opacity:1; transform:scale(1)} 100%{opacity:0; transform:scale(.5)} }
+.ai-n1{ animation:aiN1 7s infinite; } .ai-n2{ animation:aiN2 7s infinite; } .ai-n3{ animation:aiN3 7s infinite; transform-origin:245px 50px; }
+@keyframes aiA1{ 0%,58%{stroke-dashoffset:1} 64%,95%{stroke-dashoffset:0} 100%{stroke-dashoffset:1} }
+@keyframes aiA2{ 0%,64%{stroke-dashoffset:1} 70%,95%{stroke-dashoffset:0} 100%{stroke-dashoffset:1} }
+.ai-a1{ stroke-dasharray:1; animation:aiA1 7s infinite; }
+.ai-a2{ stroke-dasharray:1; animation:aiA2 7s infinite; }
+@keyframes aiH1{ 0%,63%{opacity:0} 65%,95%{opacity:1} 100%{opacity:0} }
+@keyframes aiH2{ 0%,69%{opacity:0} 71%,95%{opacity:1} 100%{opacity:0} }
+.ai-h1{ animation:aiH1 7s infinite; } .ai-h2{ animation:aiH2 7s infinite; }
+
 /* finder demo: cursor travels in, menu pops, row highlights, Finder bounces */
 @keyframes fCur{ 0%{transform:translate(52px,34px); opacity:0} 7%{opacity:1} 20%,100%{transform:translate(0,0); opacity:1} }
 @keyframes fMenu{ 0%,22%{transform:scale(0); opacity:0} 30%,100%{transform:scale(1); opacity:1} }
@@ -729,6 +755,57 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
               </g>
               <text x="110" y="102" font-size="11" fill="#8a8594" text-anchor="middle">click → scannable ink</text>
             </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASK IT -->
+  <section class="frame reveal">
+    <span class="flabel">Ask it ✨</span>
+    <span class="fnote">BYOK — Claude, GPT, or local Ollama</span>
+    <div class="fgrid">
+      <div class="f-card flip wide paper-v">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>An agent that draws with you</h3>
+            <p>Press <b>⌘I</b> and ask. A sparkle capsule floats up, the agent opens with a
+               two-line design spec, then draws the answer live on your board — shapes,
+               id-bound arrows, infra stencils, tables, even <b>runnable cells it executes</b>.
+               It can search your <b>Obsidian vault</b> to ground diagrams in your real notes.
+               Bring your own key: it lives in the macOS <b>Keychain</b>, never in a config file.</p>
+            <div class="keys"><kbd>⌘</kbd><kbd>I</kbd></div>
+          </div>
+          <div class="f-face f-back">
+            <div class="ai-back">
+              <div class="ai-cap">
+                <div class="ai-cap-in">
+                  <span class="spark">✦</span>
+                  <span class="ai-type">draw my auth flow</span>
+                </div>
+              </div>
+              <svg viewBox="0 0 300 150" width="290" fill="none">
+                <g class="ai-n1" style="transform-origin:50px 50px">
+                  <ellipse cx="50" cy="50" rx="34" ry="22" fill="#d7e9ff" stroke="#2b2b30" stroke-width="2"/>
+                  <text x="50" y="54" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">user</text>
+                </g>
+                <g class="ai-n2" style="transform-origin:150px 50px">
+                  <rect x="116" y="30" width="68" height="40" rx="8" fill="#fff3c4" stroke="#2b2b30" stroke-width="2"/>
+                  <text x="150" y="54" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">auth</text>
+                </g>
+                <g class="ai-n3" style="transform-origin:245px 50px">
+                  <path d="M245 22 L282 50 L245 78 L208 50 Z" fill="#d3f2dc" stroke="#2b2b30" stroke-width="2"/>
+                  <text x="245" y="54" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">ok?</text>
+                </g>
+                <path class="ai-a1" d="M86 50 H112" pathLength="1" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round"/>
+                <path class="ai-h1" d="M105 43 L115 50 L105 57" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="ai-a2" d="M186 50 H202" pathLength="1" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round"/>
+                <path class="ai-h2" d="M197 43 L207 50 L197 57" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text class="ai-n3" x="245" y="104" font-size="9.5" fill="#8a8594" text-anchor="middle" font-family="var(--hand)">grounded in your vault</text>
+                <text x="150" y="140" font-size="11" fill="#8a8594" text-anchor="middle">⌘I → it plans, then draws</text>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
