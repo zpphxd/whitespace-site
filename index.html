@@ -331,13 +331,6 @@ svg.j-media{ max-height:none; height:auto; }
 /* hand annotations + pinned photo on the board */
 .j-doodle{ position:absolute; font-family:var(--hand); font-size:26px; color:#7a7686; white-space:nowrap; }
 .j-doodle.j-big{ font-size:46px; color:#57525f; white-space:normal; width:640px; line-height:1.25; }
-.j-photo{ position:absolute; width:460px; background:#fff; border:2px solid var(--sketch); border-radius:10px;
-  padding:10px 10px 6px; box-shadow:0 24px 48px -24px rgba(30,25,60,.45); }
-.j-photo img{ border-radius:6px; }
-.j-photo .cap{ font-family:var(--hand); font-size:15px; color:#7a7686; text-align:center; padding:7px 0 3px; }
-.j-photo .tape{ position:absolute; top:-12px; left:50%; width:100px; height:24px;
-  transform:translateX(-50%) rotate(2deg); background:rgba(255,224,130,.72); border-radius:2px;
-  box-shadow:0 2px 6px -2px rgba(0,0,0,.15); }
 
 /* the eraser that wipes the board in the finale */
 .j-eraser{ position:absolute; width:132px; z-index:7; pointer-events:none; opacity:0;
@@ -372,7 +365,7 @@ svg.j-media{ max-height:none; height:auto; }
   display:flex; flex-direction:column; gap:28px; padding:36px 18px 30px; }
 .j-track.flat .j-node{ position:static; width:100%; max-width:640px; margin:0 auto; opacity:1; transform:none; }
 .j-track.flat .j-wires,.j-track.flat .j-dots,.j-track.flat .j-zoom,.j-track.flat .j-hint,
-.j-track.flat .j-doodle,.j-track.flat .j-photo,.j-track.flat .ws-toolbar,.j-track.flat .j-eraser{ display:none; }
+.j-track.flat .j-doodle,.j-track.flat .ws-toolbar,.j-track.flat .j-eraser{ display:none; }
 .j-track.flat .j-cap{ position:static; opacity:1; transform:none; pointer-events:auto; margin:14px auto 0; padding-bottom:46px; }
 
 /* FOOTER */
@@ -623,13 +616,6 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
         <div class="j-doodle" data-at="3.35" style="left:2440px;top:1560px;transform:rotate(-2deg)">your second brain ◆</div>
         <div class="j-doodle" data-at="4.2" style="left:1180px;top:2470px;transform:rotate(-3deg)">…and it runs ▶</div>
         <div class="j-doodle" data-at="4.6" style="left:1840px;top:1968px;transform:rotate(-2deg)">or just ask ✨</div>
-
-        <!-- a real exported board, pinned like a photo -->
-        <div class="j-photo" data-at="5.05" style="left:2720px;top:1780px;transform:rotate(2deg)">
-          <span class="tape"></span>
-          <img src="assets/whitespace-tour.webp" alt="A full Whitespace board with shapes, charts, linked files and a live code pipeline" loading="lazy">
-          <div class="cap">a real board — exported by the app ↑</div>
-        </div>
 
         <!-- nodes -->
         <article class="j-node" style="left:260px;top:220px;--tilt:-.7deg">
