@@ -208,19 +208,38 @@ kbd{ font-family:var(--font); font-size:11.5px; font-weight:550; color:var(--ink
 .ai-cap-in{ display:flex; align-items:center; gap:9px; background:rgba(255,255,255,.97);
   border-radius:14.5px; padding:11px 18px; font-size:13.5px; font-weight:550; color:#26242e; }
 .ai-cap-in .spark{ color:#6965db; font-size:15px; }
-.ai-type{ overflow:hidden; white-space:nowrap; width:0; animation:aiType 7s steps(17,end) infinite; }
-@keyframes aiType{ 0%,4%{width:0} 30%,100%{width:17ch} }
-@keyframes aiN1{ 0%,36%{opacity:0; transform:scale(.5)} 40%,95%{opacity:1; transform:scale(1)} 100%{opacity:0; transform:scale(.5)} }
-@keyframes aiN2{ 0%,44%{opacity:0; transform:scale(.5)} 48%,95%{opacity:1; transform:scale(1)} 100%{opacity:0; transform:scale(.5)} }
-@keyframes aiN3{ 0%,52%{opacity:0; transform:scale(.5)} 56%,95%{opacity:1; transform:scale(1)} 100%{opacity:0; transform:scale(.5)} }
-.ai-n1{ animation:aiN1 7s infinite; } .ai-n2{ animation:aiN2 7s infinite; } .ai-n3{ animation:aiN3 7s infinite; transform-origin:245px 50px; }
-@keyframes aiA1{ 0%,58%{stroke-dashoffset:1} 64%,95%{stroke-dashoffset:0} 100%{stroke-dashoffset:1} }
-@keyframes aiA2{ 0%,64%{stroke-dashoffset:1} 70%,95%{stroke-dashoffset:0} 100%{stroke-dashoffset:1} }
-.ai-a1{ stroke-dasharray:1; animation:aiA1 7s infinite; }
-.ai-a2{ stroke-dasharray:1; animation:aiA2 7s infinite; }
-@keyframes aiH1{ 0%,63%{opacity:0} 65%,95%{opacity:1} 100%{opacity:0} }
-@keyframes aiH2{ 0%,69%{opacity:0} 71%,95%{opacity:1} 100%{opacity:0} }
-.ai-h1{ animation:aiH1 7s infinite; } .ai-h2{ animation:aiH2 7s infinite; }
+.ai-tbox{ display:inline-grid; }
+.ai-tbox > span{ grid-area:1/1; overflow:hidden; white-space:nowrap; }
+.ai-t1{ width:0; animation:aiT1 14s infinite; }
+.ai-t2{ width:0; opacity:0; animation:aiT2 14s infinite; }
+@keyframes aiT1{ 0%,2%{width:0; opacity:1; animation-timing-function:steps(17,end)}
+  15%,45%{width:17ch; opacity:1} 48%{width:17ch; opacity:0} 50%,100%{width:0; opacity:0} }
+@keyframes aiT2{ 0%,52%{width:0; opacity:0} 53%{width:0; opacity:1; animation-timing-function:steps(20,end)}
+  66%,94%{width:20ch; opacity:1} 97%,100%{width:0; opacity:0} }
+/* round A: auth flow */
+@keyframes aiN1{ 0%,18%{opacity:0; transform:scale(.5)} 20%,46%{opacity:1; transform:scale(1)} 48%,100%{opacity:0; transform:scale(.5)} }
+@keyframes aiN2{ 0%,22%{opacity:0; transform:scale(.5)} 24%,46%{opacity:1; transform:scale(1)} 48%,100%{opacity:0; transform:scale(.5)} }
+@keyframes aiN3{ 0%,26%{opacity:0; transform:scale(.5)} 28%,46%{opacity:1; transform:scale(1)} 48%,100%{opacity:0; transform:scale(.5)} }
+.ai-n1{ animation:aiN1 14s infinite; } .ai-n2{ animation:aiN2 14s infinite; } .ai-n3{ animation:aiN3 14s infinite; transform-origin:245px 50px; }
+@keyframes aiA1{ 0%,29%{stroke-dashoffset:1} 32%,47%{stroke-dashoffset:0} 48%,100%{stroke-dashoffset:1} }
+@keyframes aiA2{ 0%,32%{stroke-dashoffset:1} 35%,47%{stroke-dashoffset:0} 48%,100%{stroke-dashoffset:1} }
+.ai-a1{ stroke-dasharray:1; animation:aiA1 14s infinite; }
+.ai-a2{ stroke-dasharray:1; animation:aiA2 14s infinite; }
+@keyframes aiH1{ 0%,31%{opacity:0} 33%,46%{opacity:1} 48%,100%{opacity:0} }
+@keyframes aiH2{ 0%,34%{opacity:0} 36%,46%{opacity:1} 48%,100%{opacity:0} }
+.ai-h1{ animation:aiH1 14s infinite; } .ai-h2{ animation:aiH2 14s infinite; }
+/* round B: a different ask, a different board */
+@keyframes aiM1{ 0%,68%{opacity:0; transform:scale(.5)} 70%,94%{opacity:1; transform:scale(1)} 97%,100%{opacity:0; transform:scale(.5)} }
+@keyframes aiM2{ 0%,72%{opacity:0; transform:scale(.5)} 74%,94%{opacity:1; transform:scale(1)} 97%,100%{opacity:0; transform:scale(.5)} }
+@keyframes aiM3{ 0%,76%{opacity:0; transform:scale(.5)} 78%,94%{opacity:1; transform:scale(1)} 97%,100%{opacity:0; transform:scale(.5)} }
+.ai-m1{ animation:aiM1 14s infinite; } .ai-m2{ animation:aiM2 14s infinite; } .ai-m3{ animation:aiM3 14s infinite; }
+@keyframes aiB1{ 0%,79%{stroke-dashoffset:1} 83%,95%{stroke-dashoffset:0} 97%,100%{stroke-dashoffset:1} }
+@keyframes aiB2{ 0%,83%{stroke-dashoffset:1} 87%,95%{stroke-dashoffset:0} 97%,100%{stroke-dashoffset:1} }
+.ai-b1{ stroke-dasharray:1; animation:aiB1 14s infinite; }
+.ai-b2{ stroke-dasharray:1; animation:aiB2 14s infinite; }
+@keyframes aiG1{ 0%,82%{opacity:0} 84%,95%{opacity:1} 97%,100%{opacity:0} }
+@keyframes aiG2{ 0%,86%{opacity:0} 88%,95%{opacity:1} 97%,100%{opacity:0} }
+.ai-g1{ animation:aiG1 14s infinite; } .ai-g2{ animation:aiG2 14s infinite; }
 
 /* finder demo: cursor travels in, menu pops, row highlights, Finder bounces */
 @keyframes fCur{ 0%{transform:translate(52px,34px); opacity:0} 7%{opacity:1} 20%,100%{transform:translate(0,0); opacity:1} }
@@ -782,7 +801,10 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
               <div class="ai-cap">
                 <div class="ai-cap-in">
                   <span class="spark">✦</span>
-                  <span class="ai-type">draw my auth flow</span>
+                  <span class="ai-tbox">
+                    <span class="ai-t1">draw my auth flow</span>
+                    <span class="ai-t2">diagram the pipeline</span>
+                  </span>
                 </div>
               </div>
               <svg viewBox="0 0 300 150" width="290" fill="none">
@@ -803,6 +825,24 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
                 <path class="ai-a2" d="M186 50 H202" pathLength="1" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round"/>
                 <path class="ai-h2" d="M197 43 L207 50 L197 57" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 <text class="ai-n3" x="245" y="104" font-size="9.5" fill="#8a8594" text-anchor="middle" font-family="var(--hand)">grounded in your vault</text>
+                <!-- round B: the pipeline cascade -->
+                <g class="ai-m1" style="transform-origin:50px 36px">
+                  <rect x="18" y="19" width="64" height="34" rx="7" fill="#ffe1ec" stroke="#2b2b30" stroke-width="2"/>
+                  <text x="50" y="40" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">ingest</text>
+                </g>
+                <g class="ai-m2" style="transform-origin:150px 76px">
+                  <rect x="118" y="59" width="64" height="34" rx="7" fill="#d7e9ff" stroke="#2b2b30" stroke-width="2"/>
+                  <text x="150" y="80" font-size="10.5" fill="#1d1d1f" text-anchor="middle" font-weight="600">queue</text>
+                </g>
+                <g class="ai-m3" style="transform-origin:262px 112px">
+                  <path d="M234 104 v18 a28 8 0 0 0 56 0 v-18" fill="#d3f2dc" stroke="#2b2b30" stroke-width="2"/>
+                  <ellipse cx="262" cy="104" rx="28" ry="8" fill="#d3f2dc" stroke="#2b2b30" stroke-width="2"/>
+                  <text x="262" y="124" font-size="10" fill="#1d1d1f" text-anchor="middle" font-weight="600">db</text>
+                </g>
+                <path class="ai-b1" d="M82 36 L100 36 L100 76 L112 76" pathLength="1" fill="none" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="ai-g1" d="M107 69 L117 76 L107 83" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="ai-b2" d="M182 76 L200 76 L200 110 L226 110" pathLength="1" fill="none" stroke="#2b2b30" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="ai-g2" d="M221 103 L231 110 L221 117" stroke="#2b2b30" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 <text x="150" y="140" font-size="11" fill="#8a8594" text-anchor="middle">⌘I → it plans, then draws</text>
               </svg>
             </div>
