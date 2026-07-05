@@ -151,6 +151,21 @@ kbd{ font-family:var(--font); font-size:11.5px; font-weight:550; color:var(--ink
 @keyframes aLine{ 0%{opacity:0} 8%,100%{opacity:1} }
 @keyframes aTab{ 0%,30%{background:#6965db; color:#fff} 33.4%,100%{background:rgba(0,0,0,.08); color:#3c3c44} }
 @keyframes aGrow{ 0%{transform:scaleY(0)} 30%,85%{transform:scaleY(1)} 100%{transform:scaleY(0)} }
+/* mcp demo: tool calls pop on the wire, shapes land on the live board (8s loop) */
+@keyframes mcW1{ 0%,3%{opacity:0; transform:scale(.6)} 7%,20%{opacity:1; transform:scale(1)} 24%,100%{opacity:0; transform:scale(.6)} }
+@keyframes mcW2{ 0%,25%{opacity:0; transform:scale(.6)} 29%,42%{opacity:1; transform:scale(1)} 46%,100%{opacity:0; transform:scale(.6)} }
+@keyframes mcW3{ 0%,47%{opacity:0; transform:scale(.6)} 51%,64%{opacity:1; transform:scale(1)} 68%,100%{opacity:0; transform:scale(.6)} }
+@keyframes mcW4{ 0%,69%{opacity:0; transform:scale(.6)} 73%,86%{opacity:1; transform:scale(1)} 90%,100%{opacity:0; transform:scale(.6)} }
+.mc-w1{ animation:mcW1 8s ease-in-out infinite; } .mc-w2{ animation:mcW2 8s ease-in-out infinite; }
+.mc-w3{ animation:mcW3 8s ease-in-out infinite; } .mc-w4{ animation:mcW4 8s ease-in-out infinite; }
+@keyframes mcS1{ 0%,8%{opacity:0; transform:scale(0)} 13%,94%{opacity:1; transform:scale(1)} 98%,100%{opacity:0; transform:scale(0)} }
+@keyframes mcS2{ 0%,30%{opacity:0; transform:scale(0)} 35%,94%{opacity:1; transform:scale(1)} 98%,100%{opacity:0; transform:scale(0)} }
+.mc-s1{ animation:mcS1 8s ease-in-out infinite; } .mc-s2{ animation:mcS2 8s ease-in-out infinite; }
+@keyframes mcA{ 0%,52%{stroke-dashoffset:1} 63%,100%{stroke-dashoffset:0} }
+@keyframes mcAo{ 0%,52%{opacity:0} 53%,95%{opacity:1} 99%,100%{opacity:0} }
+.mc-a{ stroke-dasharray:1; animation:mcA 8s ease-in-out infinite, mcAo 8s linear infinite; }
+@keyframes mcF{ 0%,73%{opacity:0; transform:scale(.4)} 78%,86%{opacity:1; transform:scale(1)} 92%,100%{opacity:0; transform:scale(.4)} }
+.mc-f{ animation:mcF 8s ease-in-out infinite; }
 /* chart-wheel demo: sweep the ring, click, chart appears — twice, two charts */
 @keyframes wWh{ 0%{opacity:0} 4%,24%{opacity:1} 28%,49%{opacity:0} 53%,71%{opacity:1} 75%,100%{opacity:0} }
 @keyframes wSpin{ 0%,4%{transform:rotate(150deg)} 18%,52%{transform:rotate(405deg)}
@@ -978,6 +993,53 @@ footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8p
     <span class="flabel">Ship it 🚀</span>
     <span class="fnote">sketch → hand-off</span>
     <div class="fgrid">
+
+      <div class="f-card flip paper-y">
+        <div class="f-inner">
+          <div class="f-face"><span class="tape"></span>
+            <h3>Agents on the live board</h3>
+            <p>Whitespace runs a local <b>MCP server</b> — point Claude Code, Claude Desktop, or Cursor at it and the model draws and edits the board you're looking at. Loopback-only, token-gated, no code execution.</p>
+          </div>
+          <div class="f-face f-back">
+            <svg viewBox="0 0 220 110" width="205" fill="none">
+              <circle cx="25" cy="52" r="14" fill="#faf0e6" stroke="#2b2b30" stroke-width="1.8"/>
+              <path d="M25 43v18M16 52h18M19 46l13 13M32 46l-13 13" stroke="#D97757" stroke-width="1.8" stroke-linecap="round"/>
+              <path class="a-march" d="M42 52 H116" stroke="#7c5cd6" stroke-width="1.8"/>
+              <g class="mc-w1" style="transform-origin:80px 32px">
+                <rect x="44" y="24" width="72" height="16" rx="8" fill="#fff" stroke="#2b2b30" stroke-width="1.4"/>
+                <text x="80" y="35" font-size="8" fill="#26242e" text-anchor="middle" font-family="Menlo,monospace">create_shape</text>
+              </g>
+              <g class="mc-w2" style="transform-origin:80px 32px">
+                <rect x="44" y="24" width="72" height="16" rx="8" fill="#fff" stroke="#2b2b30" stroke-width="1.4"/>
+                <text x="80" y="35" font-size="8" fill="#26242e" text-anchor="middle" font-family="Menlo,monospace">create_shape</text>
+              </g>
+              <g class="mc-w3" style="transform-origin:80px 32px">
+                <rect x="44" y="24" width="72" height="16" rx="8" fill="#fff" stroke="#2b2b30" stroke-width="1.4"/>
+                <text x="80" y="35" font-size="8" fill="#26242e" text-anchor="middle" font-family="Menlo,monospace">create_arrow</text>
+              </g>
+              <g class="mc-w4" style="transform-origin:80px 32px">
+                <rect x="48" y="24" width="64" height="16" rx="8" fill="#f3f0ff" stroke="#2b2b30" stroke-width="1.4"/>
+                <text x="80" y="35" font-size="8" fill="#26242e" text-anchor="middle" font-family="Menlo,monospace">show_user</text>
+              </g>
+              <text x="79" y="68" font-size="7.5" fill="#8a8594" text-anchor="middle" font-family="Menlo,monospace">127.0.0.1 · token</text>
+              <rect x="120" y="10" width="90" height="88" rx="8" fill="#fff" stroke="#2b2b30" stroke-width="1.8"/>
+              <circle cx="129" cy="18" r="1.8" fill="#ffc9c9"/><circle cx="135.5" cy="18" r="1.8" fill="#ffec99"/><circle cx="142" cy="18" r="1.8" fill="#b2f2bb"/>
+              <g class="mc-s1" style="transform-origin:150px 37px">
+                <rect x="132" y="28" width="36" height="18" rx="4" fill="#a5d8ff" stroke="#2b2b30" stroke-width="1.5"/>
+              </g>
+              <g class="mc-s2" style="transform-origin:184px 74px">
+                <ellipse cx="184" cy="74" rx="16" ry="10" fill="#b2f2bb" stroke="#2b2b30" stroke-width="1.5"/>
+              </g>
+              <path class="mc-a" pathLength="1" d="M162 48 C172 54 176 58 179 63" stroke="#2b2b30" stroke-width="1.5" stroke-linecap="round"/>
+              <path class="mc-a" pathLength="1" d="M179 63 l-5 -1.2 m5 1.2 l-1.2 -5" stroke="#2b2b30" stroke-width="1.5" stroke-linecap="round"/>
+              <g class="mc-f" style="transform-origin:198px 22px">
+                <path d="M198 16l1.7 4.3 4.3 1.7-4.3 1.7-1.7 4.3-1.7-4.3-4.3-1.7 4.3-1.7z" fill="#ffd43b" stroke="#2b2b30" stroke-width="1"/>
+              </g>
+            </svg>
+            <span class="bk-cap">your model, drawing live</span>
+          </div>
+        </div>
+      </div>
 
       <div class="f-card flip">
         <div class="f-inner">
