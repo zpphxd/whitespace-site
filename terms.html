@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms of Use — Whitespace</title>
+<meta name="description" content="The terms for using Whitespace — an open-source, MIT-licensed native macOS whiteboard.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Terms of Use — Whitespace">
+<meta property="og:description" content="Open-source, MIT-licensed, provided as-is. The terms for using Whitespace.">
+<meta property="og:url" content="https://www.whitesp.com/terms.html">
+<meta property="og:image" content="https://www.whitesp.com/assets/og.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="assets/logo-64.png">
+<link rel="apple-touch-icon" href="assets/logo-192.png">
+<style>
+:root{
+  --ink:#1d1d1f; --ink-soft:#6e6e73; --ink-faint:#a1a1a6; --line:#d2d2d7;
+  --paper:#fff; --paper-2:#fbfbfd; --accent:#6965db; --accent-ink:#524dc7; --sketch:#2b2b30;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font); color:var(--ink); background:var(--paper); line-height:1.6;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+a{ color:var(--accent-ink); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+img,svg{ display:block; max-width:100%; }
+.wrap{ width:100%; max-width:760px; margin:0 auto; padding:0 24px; }
+
+.nav{ position:sticky; top:0; z-index:100; height:52px; display:flex; align-items:center;
+  background:rgba(251,251,253,.82); backdrop-filter:saturate(180%) blur(20px); -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.07); }
+.nav .wrap{ max-width:1080px; display:flex; align-items:center; justify-content:space-between; }
+.brand{ display:flex; align-items:center; gap:9px; font-weight:600; font-size:19px; letter-spacing:-.02em; color:var(--ink); }
+.brand .mark{ width:26px; height:26px; }
+.nav-links{ display:flex; align-items:center; gap:30px; }
+.nav-links a{ font-size:14px; color:var(--ink-soft); font-weight:450; }
+.nav-links a:hover{ color:var(--ink); text-decoration:none; }
+.nav-cta{ font-size:14px; font-weight:550; color:#fff; background:var(--ink); padding:7px 16px; border-radius:980px; }
+.nav-cta:hover{ text-decoration:none; }
+@media(max-width:760px){ .nav-links{ display:none; } }
+
+.doc{ padding:70px 0 40px; }
+.doc h1{ font-size:clamp(34px,6vw,52px); font-weight:700; letter-spacing:-.03em; line-height:1.02; }
+.doc .updated{ margin-top:14px; font-size:14px; color:var(--ink-faint); }
+.doc .intro{ margin-top:26px; font-size:18px; color:var(--ink-soft); line-height:1.55; }
+.doc h2{ font-size:22px; font-weight:650; letter-spacing:-.02em; margin:44px 0 12px; }
+.doc p{ margin:12px 0; color:#2c2c30; }
+.doc ul{ margin:12px 0 12px 22px; }
+.doc li{ margin:7px 0; color:#2c2c30; }
+.doc strong{ color:var(--ink); font-weight:600; }
+.doc .tldr{ margin-top:30px; padding:18px 22px; background:#f5f3ff; border:1px solid #e4defb;
+  border-radius:14px; font-size:15.5px; color:#3a3560; }
+.doc .tldr b{ color:var(--accent-ink); }
+.doc code{ font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:.9em; background:#f5f5f7;
+  padding:1px 6px; border-radius:5px; }
+
+footer{ padding:50px 0; border-top:1px solid var(--line); background:var(--paper); margin-top:50px; }
+footer .wrap{ max-width:1080px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+footer .brand{ font-size:16px; }
+footer .flinks{ display:flex; gap:24px; flex-wrap:wrap; }
+footer .flinks a{ font-size:14px; color:var(--ink-soft); }
+footer .flinks a:hover{ color:var(--ink); text-decoration:none; }
+footer .copy{ font-size:13px; color:var(--ink-faint); width:100%; padding-top:8px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/logo-64.png" alt="" width="26" height="26">
+      <span>Whitespace</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">The board</a>
+      <a href="features.html">Features</a>
+      <a href="https://github.com/zpphxd/whitespace" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <a class="nav-cta" href="https://github.com/zpphxd/whitespace/releases/latest/download/Whitespace.dmg" target="_blank" rel="noopener">Download</a>
+  </div>
+</nav>
+
+<main class="doc">
+  <div class="wrap">
+    <h1>Terms of Use</h1>
+    <p class="updated">Last updated: July 6, 2026</p>
+
+    <div class="tldr">
+      <b>The short version.</b> Whitespace is <b>free and open source</b> under the MIT License. Use it,
+      fork it, build on it. It's provided <b>as-is</b> with no warranty. You're responsible for the
+      content you create, the code you choose to run, and any AI provider you connect.
+    </div>
+
+    <p class="intro">By downloading or using the Whitespace application or this website, you agree to
+      these terms. If you don't agree, please don't use them.</p>
+
+    <h2>1. The software is open source</h2>
+    <p>Whitespace is licensed under the <strong>MIT License</strong> (Copyright © 2026 Zach Powers). Your
+      rights to use, copy, modify, and distribute the software are governed by that license, available
+      in the <a href="https://github.com/zpphxd/whitespace" target="_blank" rel="noopener">project
+      repository</a>. Nothing here is intended to limit the rights the MIT License grants you.</p>
+
+    <h2>2. Acceptable use</h2>
+    <p>You agree to use Whitespace lawfully. You are solely responsible for the boards, drawings, files,
+      and other content you create or import, and for ensuring you have the rights to use them. Don't use
+      the software to infringe others' rights or to do anything illegal.</p>
+
+    <h2>3. Code execution</h2>
+    <p>Whitespace can run code that you place in cells or that you choose to execute, using interpreters
+      installed on your own machine. <strong>This code runs with your user privileges.</strong> You are
+      responsible for what you run — only run code you understand and trust, especially in boards you
+      received from someone else. You use this capability at your own risk.</p>
+
+    <h2>4. AI features (bring-your-own-key)</h2>
+    <p>The AI assistant requires an API key from a third-party provider that you supply. When you use it,
+      your data is sent to <strong>your chosen provider</strong> under that provider's terms, and you are
+      responsible for your API keys, your usage, and any charges the provider bills you. AI output may be
+      inaccurate or incomplete — <strong>review it before relying on it</strong>. We make no guarantee
+      about AI-generated content.</p>
+
+    <h2>5. Third-party services</h2>
+    <p>Whitespace interoperates with independent services — your AI provider, GitHub (for downloads and
+      updates), and others. Your use of those services is governed by their own terms, and we are not
+      responsible for them.</p>
+
+    <h2>6. No warranty</h2>
+    <p>THE SOFTWARE AND WEBSITE ARE PROVIDED <strong>"AS IS", WITHOUT WARRANTY OF ANY KIND</strong>,
+      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+      PARTICULAR PURPOSE, AND NON-INFRINGEMENT. We do not warrant that the software will be error-free,
+      uninterrupted, or that it will not lose data — keep backups of anything important.</p>
+
+    <h2>7. Limitation of liability</h2>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+      LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR
+      OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+      THE SOFTWARE.</p>
+
+    <h2>8. Trademarks</h2>
+    <p>Whitespace is <strong>not affiliated with, endorsed by, or sponsored by Excalidraw</strong>. It is
+      independently built and interoperable with the <code>.excalidraw</code> file format. Other names and
+      marks are the property of their respective owners.</p>
+
+    <h2>9. Changes</h2>
+    <p>We may update these terms as the product evolves. Continued use after changes means you accept the
+      updated terms, which will carry a new "Last updated" date.</p>
+
+    <h2>10. Contact</h2>
+    <p>Questions about these terms? Reach the maintainer via the
+      <a href="https://www.linkedin.com/in/zachary-powers-a933b9137/" target="_blank" rel="noopener">LinkedIn link</a>
+      in the footer.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/logo-64.png" alt="" width="22" height="22" style="width:22px;height:22px">
+      Whitespace
+    </a>
+    <div class="flinks">
+      <a href="index.html#features">The board</a>
+      <a href="features.html">Features</a>
+      <a href="https://github.com/zpphxd/whitespace" target="_blank" rel="noopener">GitHub</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://www.linkedin.com/in/zachary-powers-a933b9137/" target="_blank" rel="noopener">Contact me</a>
+    </div>
+    <p class="copy">Whitespace — a native macOS whiteboard, written in Swift. Not affiliated with Excalidraw; interoperable with the <code>.excalidraw</code> format.</p>
+  </div>
+</footer>
+
+</body>
+</html>
